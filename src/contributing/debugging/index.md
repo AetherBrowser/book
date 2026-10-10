@@ -18,15 +18,15 @@ log::trace!("hello");
 Unlike macros like `println!`, `log` adds a timestamp and tells you where the message came from:
 
 ```
-[2024-05-01T09:07:42Z ERROR servoshell::app] hello
-[2024-05-01T09:07:42Z WARN  servoshell::app] hello
-[2024-05-01T09:07:42Z INFO  servoshell::app] hello
-[2024-05-01T09:07:42Z DEBUG servoshell::app] hello
-[2024-05-01T09:07:42Z TRACE servoshell::app] hello
+[2024-05-01T09:07:42Z ERROR aether::app] hello
+[2024-05-01T09:07:42Z WARN  aether::app] hello
+[2024-05-01T09:07:42Z INFO  aether::app] hello
+[2024-05-01T09:07:42Z DEBUG aether::app] hello
+[2024-05-01T09:07:42Z TRACE aether::app] hello
 ```
 
 You can use `RUST_LOG` to filter the output of `log` by level (`off`, `error`, `warn`, `info`, `debug`, `trace`) and/or by where the message came from, also known as the “target”.
-Usually the target is a Rust module path like `servoshell::app`, but there are some special targets too (see [§ *Event tracing*](#event-tracing)).
+Usually the target is a Rust module path like `aether::app`, but there are some special targets too (see [§ *Event tracing*](#event-tracing)).
 To set `RUST_LOG`, prepend it to your command or use `export`:
 
 ```sh
@@ -39,7 +39,7 @@ See [the `env_logger` docs](https://docs.rs/env_logger/0.11.3/env_logger/index.h
 
 - to enable all messages up to and including `debug` level, but not `trace`:
   <br>`RUST_LOG=debug`
-- to enable all messages from `servo::*`, `servoshell::*`, or any target starting with `servo`:
+- to enable all messages from `servo::*`, `aether::*`, or any target starting with `servo`:
   <br>`RUST_LOG=servo=trace` (or just `RUST_LOG=servo`)
 - to enable all messages from any target starting with `style`, but only `error` and `warn` messages from `style::rule_tree`:
   <br>`RUST_LOG=style,style::rule_tree=warn`
@@ -49,7 +49,7 @@ Note that even when a log message is filtered out, it can still impact runtime p
 
 ### Event tracing
 
-In the **constellation**, the **compositor**, and **servoshell**, we log messages sent to and received from other components, using targets of the form `component>other@Event` or `component<other@Event`.
+In the **constellation**, the **compositor**, and **aether**, we log messages sent to and received from other components, using targets of the form `component>other@Event` or `component<other@Event`.
 This means you can select which event types to log at runtime with `RUST_LOG`!
 
 For example, in the **constellation** ([more details](https://github.com/servo/servo/blob/bccbc87db7b986cae31c8f14f0a130336f8417b2/components/constellation/tracing.rs)):
@@ -68,21 +68,21 @@ In the **compositor** ([more details](https://github.com/servo/servo/blob/bccbc8
 - to trace all events except for Forwarded events:
   <br>`RUST_LOG=compositor<,compositor<constellation@Forwarded=off`
 
-In **servoshell** ([more details](https://github.com/servo/servo/blob/01a9b317d4a6710547b8b0c0c476cc3b82251044/ports/servoshell/desktop/tracing.rs)):
+In **aether** ([more details](https://github.com/AetherBrowser/aether/blob/master/ports/aether/desktop/tracing.rs)):
 
 - to trace only events from servo:
-  <br>`RUST_LOG='servoshell<=off,servoshell>=off,servoshell<servo@'`
+  <br>`RUST_LOG='aether<=off,aether>=off,aether<servo@'`
 - to trace all events except for AxisMotion events:
-  <br>`RUST_LOG='servoshell<,servoshell>,servoshell<winit@WindowEvent(AxisMotion)=off'`
+  <br>`RUST_LOG='aether<,aether>,aether<winit@WindowEvent(AxisMotion)=off'`
 - to trace only winit window moved events:
-  <br>`RUST_LOG='servoshell<=off,servoshell>=off,servoshell<winit@WindowEvent(Moved)'`
+  <br>`RUST_LOG='aether<=off,aether>=off,aether<winit@WindowEvent(Moved)'`
 
 Event tracing can generate an unwieldy amount of output.
 In general, we recommend the following config to keep things usable:
 
 - `constellation<,constellation>,constellation<compositor@ForwardEvent(MouseMoveEvent)=off,constellation<compositor@LogEntry=off,constellation<compositor@ReadyToPresent=off,constellation<script@LogEntry=off`
 - `compositor<,compositor>`
-- `servoshell<,servoshell>,servoshell<winit@DeviceEvent=off,servoshell<winit@MainEventsCleared=off,servoshell<winit@NewEvents(WaitCancelled)=off,servoshell<winit@RedrawEventsCleared=off,servoshell<winit@RedrawRequested=off,servoshell<winit@UserEvent(WakerEvent)=off,servoshell<winit@WindowEvent(CursorMoved)=off,servoshell<winit@WindowEvent(AxisMotion)=off`
+- `aether<,aether>,aether<winit@DeviceEvent=off,aether<winit@MainEventsCleared=off,aether<winit@NewEvents(WaitCancelled)=off,aether<winit@RedrawEventsCleared=off,aether<winit@RedrawRequested=off,aether<winit@UserEvent(WakerEvent)=off,aether<winit@WindowEvent(CursorMoved)=off,aether<winit@WindowEvent(AxisMotion)=off`
 
 ## Other debug logging
 
@@ -120,9 +120,9 @@ On macOS, you can also add some Cocoa-specific debug options, after an extra `--
 $ ./mach run -- test.html -- -NSShowAllViews YES
 ```
 
-## Running servoshell with a debugger
+## Running Aether with a debugger
 
-To run servoshell with a debugger, use `--debugger-cmd`.
+To run aether with a debugger, use `--debugger-cmd`.
 Note that if you choose `gdb` or `lldb`, we automatically use `rust-gdb` and `rust-lldb`.
 
 ```sh
@@ -133,34 +133,34 @@ $ ./mach run --debugger-cmd=lldb test.html  # Same as `--debugger-cmd=rust-lldb`
 To pass extra options to the debugger, you’ll need to run the debugger yourself:
 
 ```sh
-$ ./mach run --debugger-cmd=gdb -ex=r test.html         # Passes `-ex=r` to servoshell.
+$ ./mach run --debugger-cmd=gdb -ex=r test.html         # Passes `-ex=r` to aether.
 $ rust-gdb -ex=r --args target/debug/servo test.html    # Passes `-ex=r` to gdb.
 
-$ ./mach run --debugger-cmd=lldb -o r test.html         # Passes `-o r` to servoshell.
+$ ./mach run --debugger-cmd=lldb -o r test.html         # Passes `-o r` to aether.
 $ rust-lldb -o r -- target/debug/servo test.html        # Passes `-o r` to lldb.
 
-$ ./mach run --debugger-cmd=rr -M test.html             # Passes `-M` to servoshell.
+$ ./mach run --debugger-cmd=rr -M test.html             # Passes `-M` to aether.
 $ rr record -M target/debug/servo test.html             # Passes `-M` to rr.
 ```
 
-Many debuggers need extra options to separate servoshell’s arguments from their own options, and `--debugger-cmd` will pass those options automatically [for a few debuggers](https://github.com/servo/servo/blob/bccbc87db7b986cae31c8f14f0a130336f8417b2/third_party/mozdebug/mozdebug/mozdebug.py#L32-L48), including `gdb` and `lldb`.
+Many debuggers need extra options to separate aether’s arguments from their own options, and `--debugger-cmd` will pass those options automatically [for a few debuggers](https://github.com/servo/servo/blob/bccbc87db7b986cae31c8f14f0a130336f8417b2/third_party/mozdebug/mozdebug/mozdebug.py#L32-L48), including `gdb` and `lldb`.
 For other debuggers, `--debugger-cmd` will only work if the debugger needs no extra options:
 
 ```sh
 $ ./mach run --debugger-cmd=rr test.html                    # Good, because it’s...
-#  servoshell arguments        ^^^^^^^^^
+#  aether arguments        ^^^^^^^^^
 $ rr target/debug/servo test.html                           # equivalent to this.
-#  servoshell arguments ^^^^^^^^^
+#  aether arguments ^^^^^^^^^
 
 $ ./mach run --debugger-cmd=renderdoccmd capture test.html  # Bad, because it’s...
 #                renderdoccmd arguments? ^^^^^^^
-#                  servoshell arguments          ^^^^^^^^^
+#                  aether arguments          ^^^^^^^^^
 $ renderdoccmd target/debug/servo capture test.html         # equivalent to this.
 # => target/debug/servo is not a valid command.
 
 $ renderdoccmd capture target/debug/servo test.html         # Good.
 #              ^^^^^^^ renderdoccmd arguments
-#                    servoshell arguments ^^^^^^^^^
+#                    aether arguments ^^^^^^^^^
 ```
 
 ## Debugging with gdb or lldb
@@ -217,7 +217,7 @@ Comment out the profiling code, and only keep the inner function, and that shoul
 ## Reversible debugging with rr (Linux only)
 
 [rr](https://rr-project.org) is like gdb, but lets you rewind.
-Start by running servoshell via rr:
+Start by running aether via rr:
 
 ```sh
 $ ./mach run --debugger=rr test.html    # Either this...
@@ -244,11 +244,11 @@ To delete them, go to `~/.local/share/rr`.
 ## OpenGL debugging with RenderDoc (Linux or Windows only)
 
 [RenderDoc](https://renderdoc.org/docs/) lets you debug Servo’s OpenGL activity.
-Start by running servoshell via renderdoccmd:
+Start by running aether via renderdoccmd:
 
 ```sh
 $ renderdoccmd capture -d . target/debug/servo test.html
 ```
 
-While servoshell is running, run `qrenderdoc`, then choose **File** > **Attach to Running Instance**.
+While aether is running, run `qrenderdoc`, then choose **File** > **Attach to Running Instance**.
 Once attached, you can press **F12** or **Print Screen** to capture a frame.

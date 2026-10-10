@@ -1,10 +1,10 @@
 # Building on WSL
 
-Servo can be built on WSL as if you are building on any other Linux distribution.
-To run non-headless servo shell on WSL, you will most likely need to be on Windows 10 Build 19044+ or Windows 11 as access to WSL v2 is needed for GUI.
+Aether can be built on WSL as if you are building on any other Linux distribution.
+To run the desktop browser on WSL, you will most likely need to be on Windows 10 Build 19044+ or Windows 11 as access to WSL v2 is needed for GUI.
 
 1. Setup WSL v2.  See [Microsoft's guidelines for setting up GUI apps in WSL](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps).
-2. Follow the [instructions](linux.md) for building and running Servo on the WSL distribution that you are using (e.g. Ubuntu, OpenSuse, etc.)
+2. Follow the [instructions](linux.md) for building and running Aether on the WSL distribution that you are using (e.g. Ubuntu, OpenSuse, etc.)
 
 <div class="warning _note">
 

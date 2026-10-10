@@ -5,7 +5,7 @@
 - Install `rustup`: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Restart your shell to make sure `cargo` is available
 - Install the other dependencies: `./mach bootstrap`
-- Build servoshell: `./mach build`
+- Build Aether: `./mach build`
 
 ## Troubleshooting
 

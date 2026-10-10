@@ -1,7 +1,8 @@
-# Building Servo
+# Building Aether
 
-This page contains more detailed information about building Servo.
-You might want to skip straight to instructions for building Servo on your system:
+This page contains more detailed information about building Aether.
+`./mach build` builds the `ports/aether` browser, which includes the Servo engine.
+You might want to skip straight to instructions for your system:
 
 - [Linux](linux.md)
 - [macOS](macos.md)
@@ -13,7 +14,7 @@ You might want to skip straight to instructions for building Servo on your syste
 
 # mach
 
-You need to use `mach` to build Servo.
+You need to use `mach` to build Aether.
 `mach` is a Python program that does plenty of things to make working on Servo easier, like building and running Servo, running tests, and updating dependencies.
 
 **Windows users:** you will need to replace `./mach` with `.\mach` in the commands in this book if you are using cmd.
@@ -25,13 +26,13 @@ $ ./mach --help
 $ ./mach build --help
 ```
 
-When you use mach to run another program, such as servoshell, that program may have its own options with the same names as mach options.
+When you use mach to run another program, such as Aether, that program may have its own options with the same names as mach options.
 You can use `--`, surrounded by spaces, to tell mach not to touch any subsequent options and leave them for the other program.
 
 ```sh
 $ ./mach run --help         # Gets help for `mach run`.
 $ ./mach run -d --help      # Still gets help for `mach run`.
-$ ./mach run -d -- --help   # Gets help for the debug build of servoshell.
+$ ./mach run -d -- --help   # Gets help for the debug build of Aether.
 ```
 
 This also applies to the Servo unit tests, where there are three layers of options: mach options, `cargo test` options, and [libtest options](https://doc.rust-lang.org/cargo/commands/cargo-test.html#description).
@@ -149,15 +150,18 @@ Some build settings can only be enabled manually:
 
 A full list of arguments can be seen by running `./mach build --help`.
 
-## Running servoshell
+## Running Aether
 
-When you build it yourself, servoshell will be in `target/debug/servo` or `target/release/servo`.
-You can run it directly as shown above, but we recommend using [mach](#mach) instead.
+On the desktop, a build produces `target/debug/aether` or `target/release/aether`.
+You can run it directly, but we recommend using [mach](#mach) instead.
 
-To run servoshell with mach, replace `./servo` with `./mach run -d --` or `./mach run -r --`, depending on the [build profile](#build-profiles) you want to run.
-For example, both of the commands below run the debug build of servoshell with the same options:
+To run Aether with mach, use `./mach run -d --` or `./mach run -r --`, depending on the [build profile](#build-profiles) you want to run.
+For example, both of the commands below run the debug build with the same options:
 
 ```sh
-$ target/debug/servoshell https://demo.servo.org
-$ ./mach run -d -- https://demo.servo.org
+$ target/debug/aether https://example.com
+$ ./mach run -d -- https://example.com
 ```
+
+Android and OpenHarmony still package the native library as `libservoshell.so`.
+Pass `--port=servoshell` to build the upstream demo shell instead of Aether.

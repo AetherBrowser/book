@@ -5,7 +5,7 @@
 - Tell `mach` to use Nix: `export MACH_USE_NIX=`
 - Type `nix-shell` to enter a shell with all of the necessary tools and dependencies.
 - Install the other dependencies: `./mach bootstrap`
-- Build servoshell: `./mach build`
+- Build Aether: `./mach build`
 
 ## Troubleshooting
 

@@ -1,8 +1,8 @@
 # License
 
-Servo is subject to the terms of the Mozilla Public License, v. 2.0.
+Aether, and the Servo engine it embeds, is subject to the terms of the Mozilla Public License, v. 2.0.
 A copy of the MPL can be obtained at https://mozilla.org/MPL/2.0/.
-When using ServoShell, a list of licenses can be be viewed under the url `servo:license`.
+When using Aether, a list of licenses can be viewed under the url `servo:license`.
 
 Servo also bundles FreeType.
 Portions of this software are copyright © 2026 The FreeType Project (https://freetype.org).  All rights reserved.

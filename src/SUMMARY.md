@@ -1,11 +1,11 @@
 # Summary
 
-[The Servo Book](title-page.md)
+[The Aether Book](title-page.md)
 
-# Trying Servo
+# Trying Aether
 
-- [Getting servoshell](trying/getting-servoshell.md)
-- [Running servoshell](trying/running-servoshell.md)
+- [Getting Aether](trying/getting-aether.md)
+- [Running Aether](trying/running-aether.md)
 
 # Building
 

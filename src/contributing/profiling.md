@@ -62,10 +62,10 @@ This creates a `servo.pftrace` file in the current directory, which can be visua
 
 ## Sampling Profiling
 
-[samply](https://github.com/mstange/samply) is a cross-platform sampling profiler. Assuming that you have build a profiling build as described above, the following command will run `servoshell` and display a visualization of the run in your browser:
+[samply](https://github.com/mstange/samply) is a cross-platform sampling profiler. Assuming that you have build a profiling build as described above, the following command will run `aether` and display a visualization of the run in your browser:
 
 ```sh
-samply record target/profiling/servoshell
+samply record target/profiling/aether
 ```
 
 On certain platforms, `samply` might need extra setup - see [the documentation](https://github.com/mstange/samply#description) for more information.

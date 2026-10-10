@@ -53,6 +53,6 @@ Its complexity is derived from the code that stores properties, [`cascade` funct
 [selectors-rule]: https://doc.servo.org/style/stylist/struct.Rule.html
 [per-pseudo-selectormap]: https://doc.servo.org/style/selector_parser/struct.PerPseudoElementMap.html
 [per-origin-selectormap]: https://doc.servo.org/style/stylist/struct.PerOriginSelectorMap.html
-[docs-pipeline]: https://book.servo.org/old/glossary.html#pipeline
+[docs-pipeline]: ../old/glossary.md#pipeline
 [properties-module]: https://doc.servo.org/style/properties/index.html
 [properties-cascade-fn]: https://doc.servo.org/style/properties/cascade/fn.cascade.html

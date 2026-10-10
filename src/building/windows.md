@@ -9,7 +9,7 @@
   - **C++ ATL for latest v143 build tools (x86 & x64)** (`Microsoft.VisualStudio.Component.VC.ATL`)
 - Restart your shell to make sure `cargo` is available
 - Install the other dependencies: `.\mach bootstrap`
-- Build servoshell: `.\mach build`
+- Build Aether: `.\mach build`
 
 <div class="warning _note">
 
