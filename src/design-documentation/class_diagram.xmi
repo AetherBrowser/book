@@ -2,7 +2,7 @@
 <xmi:XMI xmlns:uml="http://www.omg.org/spec/UML/20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmi:version="20131001">
   <uml:Model xmi:id="model" name="aether" visibility="public">
     <ownedComment xmi:type="uml:Comment" xmi:id="c_1">
-      <body>UML 2.5 class diagram of the ports/aether crate (the Aether shell, based on Servo). Packages follow the Rust modules. Traits are interfaces. Enums are enumerations. Modules with no types are utility classes. The external package holds types from neighboring crates (servo, winit, aether-history) only when aether owns or realizes them. Composition means ownership. Shared aggregation means an Rc or a shared reference.</body>
+      <body>UML 2.5 class diagram of the Aether shell (ports/aether) and of the Servo components this repository has changed: aether_history, constellation, embedder_traits, script, and profile. Servo types that were only extended (WebView, WebViewDelegate) stay in the external package. Packages follow the Rust modules. Traits are interfaces. Enums are enumerations. Modules with no types are utility classes. Composition means ownership. Shared aggregation means an Rc or a shared reference.</body>
     </ownedComment>
     <packagedElement xmi:type="uml:Package" xmi:id="pkg_aether" name="aether">
       <ownedComment xmi:type="uml:Comment" xmi:id="c_2">
@@ -208,7 +208,7 @@
           <ownedOperation xmi:type="uml:Operation" xmi:id="op_197" name="history_update" visibility="package">
             <ownedParameter xmi:type="uml:Parameter" xmi:id="p_198" name="active" direction="in" type="hist_ActiveEntry"/>
             <ownedParameter xmi:type="uml:Parameter" xmi:id="p_199" name="url" direction="in" type="dt_21"/>
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_200" name="navigationType" direction="in" type="dt_23"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_200" name="navigationType" direction="in" type="emb_NavigationType"/>
             <ownedParameter xmi:type="uml:Parameter" xmi:id="p_201" name="return" direction="return" type="hist_HistoryUpdate"/>
           </ownedOperation>
           <ownedOperation xmi:type="uml:Operation" xmi:id="op_202" name="open_history" visibility="package">
@@ -1264,13 +1264,40 @@
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="servo_WebView" name="WebView">
         <ownedComment xmi:type="uml:Comment" xmi:id="c_41">
-          <body>Top-level web view (servo crate).</body>
+          <body>Top-level web view (servo crate). Aether stores the page title here and forwards committed navigations to the delegate.</body>
         </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2001" name="pageTitle" visibility="private" type="dt_6"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2002" name="page_title" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2003" name="return" direction="return" type="dt_6"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2004" name="set_page_title" visibility="package">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2005" name="title" direction="in" type="dt_6"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2006" name="set_history" visibility="package">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2007" name="entries" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2008" name="current" direction="in" type="dt_24"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2009" name="navigationType" direction="in" type="emb_NavigationType"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2010" name="pageTitle" direction="in" type="dt_6"/>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="servo_WebViewDelegate" name="WebViewDelegate">
         <ownedComment xmi:type="uml:Comment" xmi:id="c_42">
-          <body>Notifications from a WebView to the embedder.</body>
+          <body>Notifications from a WebView to the embedder. Aether added the page title and the committed navigation type.</body>
         </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2011" name="notify_page_title_changed" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2012" name="webview" direction="in" type="servo_WebView"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2013" name="title" direction="in" type="dt_6"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2014" name="notify_history_changed" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2015" name="webview" direction="in" type="servo_WebView"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2016" name="entries" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2017" name="current" direction="in" type="dt_24"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2018" name="notify_navigation_committed" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2019" name="webview" direction="in" type="servo_WebView"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2020" name="url" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2021" name="navigationType" direction="in" type="emb_NavigationType"/>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="servo_ServoDelegate" name="ServoDelegate">
         <ownedComment xmi:type="uml:Comment" xmi:id="c_43">
@@ -1352,11 +1379,6 @@
           <body>Rendering context shared by the WebViews of a window.</body>
         </ownedComment>
       </packagedElement>
-      <packagedElement xmi:type="uml:Class" xmi:id="hist_HistoryService" name="HistoryService">
-        <ownedComment xmi:type="uml:Comment" xmi:id="c_67">
-          <body>Profile history (aether-history crate).</body>
-        </ownedComment>
-      </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="winit_ApplicationHandler" name="ApplicationHandler">
         <ownedComment xmi:type="uml:Comment" xmi:id="c_68">
           <body>winit application handler.</body>
@@ -1415,7 +1437,6 @@
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_20" name="win_ServoShellWindow[]"/>
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_21" name="Url"/>
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_22" name="Option&lt;SystemTime&gt;"/>
-      <packagedElement xmi:type="uml:DataType" xmi:id="dt_23" name="NavigationType"/>
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_24" name="Integer"/>
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_25" name="Option&lt;PathBuf&gt;"/>
       <packagedElement xmi:type="uml:DataType" xmi:id="dt_26" name="PathBuf"/>
@@ -2167,5 +2188,250 @@
     <packagedElement xmi:type="uml:Dependency" xmi:id="dep_985" name="reads" client="proto_ResourceProtocolHandler" supplier="res_Resources"/>
     <packagedElement xmi:type="uml:Dependency" xmi:id="dep_986" name="installs" client="cli_Cli" supplier="crash_CrashHandler"/>
     <packagedElement xmi:type="uml:Dependency" xmi:id="dep_987" name="installs" client="cli_Cli" supplier="panic_PanicHook"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_ahist" name="aether_history">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2100">
+        <body>components/aether_history. Profile browsing history in a SQLite database (places and visits), written from a dedicated thread so the embedder never blocks on disk.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="hist_HistoryService" name="HistoryService">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_67">
+          <body>Queues history commands on a channel and applies them on a thread named History. Dropping the service waits until pending commands are written.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2101" name="open" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2102" name="path" direction="in" type="dt_26"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2103" name="return" direction="return" type="hist_HistoryService"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2104" name="open_in_memory" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2105" name="return" direction="return" type="hist_HistoryService"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2106" name="record_visit" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2107" name="url" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2108" name="visitDate" direction="in" type="dt_22"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2109" name="title" direction="in" type="dt_6"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2110" name="set_title" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2111" name="url" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2112" name="title" direction="in" type="dt_7"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2113" name="replace_visit" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2114" name="oldUrl" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2115" name="visitDate" direction="in" type="dt_22"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2116" name="newUrl" direction="in" type="dt_21"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2117" name="title" direction="in" type="dt_6"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="ah_HistoryStore" name="HistoryStore">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2118">
+          <body>SQLite connection. places stores each URL once (url, guid, title). visits stores one row per visit, dated in microseconds since the Unix epoch. Credentials are stripped before a URL is stored. Schema migrations are appended and tracked with user_version.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2119" name="connection" visibility="private" type="dt_7"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2120" name="open" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2121" name="path" direction="in" type="dt_26"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2122" name="return" direction="return" type="ah_HistoryStore"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2123" name="open_in_memory" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2124" name="return" direction="return" type="ah_HistoryStore"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2125" name="apply" visibility="package">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2126" name="commands" direction="in" type="ah_HistoryCommand"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="ah_HistoryCommand" name="HistoryCommand">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2127">
+          <body>One change sent to the history thread. Several commands are applied together in a single transaction.</body>
+        </ownedComment>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2128" name="RecordVisit"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2129" name="SetTitle"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2130" name="ReplaceVisit"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_embedder" name="embedder">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2131">
+        <body>components/shared/embedder. Only the type Aether added for committed navigations is modeled here.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="emb_NavigationType" name="NavigationType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2132">
+          <body>How the active session-history entry of a WebView changed when a navigation was committed.</body>
+        </ownedComment>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2133" name="Push"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2134" name="Replace"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2135" name="Traverse"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_constellation" name="constellation">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2136">
+        <body>components/constellation, limited to the types Aether changed for profile history and page titles. The rest of the constellation is unchanged Servo and is not drawn.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="co_Constellation" name="Constellation">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2137">
+          <body>Multiprocess browser core. Records the navigation type on each pending session-history change and forwards the active top-level title to the embedder.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2138" name="handle_title_changed_msg" visibility="private">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2139" name="pipelineId" direction="in" type="dt_12"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2140" name="title" direction="in" type="dt_7"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2141" name="notify_history_changed" visibility="private">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2142" name="webviewId" direction="in" type="dt_12"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2143" name="navigationType" direction="in" type="emb_NavigationType"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="co_ConstellationWebView" name="ConstellationWebView">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2144">
+          <body>Constellation state of one embedder WebView, including its joint session history and pending changes.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="co_JointSessionHistory" name="JointSessionHistory">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2145">
+          <body>Joint session history of a WebView. Inner-frame URLs are projected to the parent URL when the embedder is notified.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="co_SessionHistoryChange" name="SessionHistoryChange">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2146">
+          <body>Pending session-history change, applied once the new pipeline has loaded. Aether added navigationType, reported to the embedder when the new document becomes active.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2147" name="browsingContextId" visibility="public" type="dt_12"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2148" name="webviewId" visibility="public" type="dt_12"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2149" name="newPipelineId" visibility="public" type="dt_12"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2150" name="navigationType" visibility="public" type="emb_NavigationType"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="co_NeedsToReload" name="NeedsToReload">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2151">
+          <body>Pipeline replaced by a session-history change: still alive, or discarded and reloaded from LoadData.</body>
+        </ownedComment>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2152" name="No"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2153" name="Yes"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="co_Pipeline" name="Pipeline">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2154">
+          <body>Constellation view of one window. Holds the document title. page_title is sent to the embedder only for the active top-level pipeline.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2155" name="title" visibility="public" type="dt_7"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2156" name="webviewId" visibility="public" type="dt_12"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2157" name="page_title" visibility="package">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2158" name="return" direction="return" type="dt_6"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="co_ConstellationToEmbedderMsg" name="ConstellationToEmbedderMsg">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2159">
+          <body>Messages from the constellation to the embedder. Only the variants Aether extended are listed: HistoryChanged now carries an optional NavigationType and page title, and PageTitleChanged reports the active top-level title.</body>
+        </ownedComment>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2160" name="HistoryChanged"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_2161" name="PageTitleChanged"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_script" name="script">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2162">
+        <body>components/script, limited to the types Aether changed: document titles sent to the constellation, location navigations, and script-thread stats for the processes page.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="sc_Document" name="Document">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2163">
+          <body>DOM document. When its title changes, it sends TitleChanged to the constellation with the pipeline id and the new title.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2164" name="title_changed" visibility="package"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="sc_Location" name="Location">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2165">
+          <body>Window location. Navigations choose push, replace, or auto history handling. Client-side redirects and location.replace use replace, so they do not add a profile-history visit.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2166" name="navigate_a_location" visibility="private"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="sc_ScriptThread" name="ScriptThread">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2167">
+          <body>Script event loop. Periodically publishes ScriptTabStats for the top-level document of this thread, used by the servo:processes page.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2168" name="publish_tab_stats" visibility="private"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_profile" name="profile">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2169">
+        <body>components/shared/profile. Aether added cross-process snapshots of script threads, written as JSON under the temporary directory.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="pr_ScriptTabStats" name="ScriptTabStats">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2170">
+          <body>Live script-thread stats for one tab: process id, thread id, webview, URL, SpiderMonkey heap size, and the time of the snapshot.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2171" name="pid" visibility="public" type="dt_24"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2172" name="tid" visibility="public" type="dt_24"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2173" name="webviewId" visibility="public" type="dt_7"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2174" name="url" visibility="public" type="dt_7"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2175" name="jsHeapBytes" visibility="public" type="dt_8"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_2176" name="updatedMs" visibility="public" type="dt_8"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="pr_TabStats" name="TabStats">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_2177">
+          <body>Rust module of free functions. Publishes, removes, and collects ScriptTabStats snapshots.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2178" name="publish_script_tab_stats" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2179" name="stats" direction="in" type="pr_ScriptTabStats"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2180" name="unpublish_script_tab_stats" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_2181" name="collect_script_tab_stats" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_2182" name="return" direction="return" type="pr_ScriptTabStats"/>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_2200" name="sessionHistory" memberEnd="end_2201 back_2203">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_2201" name="sessionHistory" visibility="public" type="co_JointSessionHistory" aggregation="composite" association="assoc_2200">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_2201_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_2201_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_2203" type="co_ConstellationWebView" aggregation="none" association="assoc_2200">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_2203_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_2203_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_2204" name="pendingChanges" memberEnd="end_2205 back_2207">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_2205" name="pendingChanges" visibility="private" type="co_SessionHistoryChange" aggregation="composite" association="assoc_2204">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_2205_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_2205_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_2207" type="co_ConstellationWebView" aggregation="none" association="assoc_2204">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_2207_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_2207_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_2208" name="webviews" memberEnd="end_2209 back_2211">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_2209" name="webviews" visibility="private" type="co_ConstellationWebView" aggregation="composite" association="assoc_2208">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_2209_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_2209_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_2211" type="co_Constellation" aggregation="none" association="assoc_2208">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_2211_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_2211_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_2212" name="pipelines" memberEnd="end_2213 back_2215">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_2213" name="pipelines" visibility="private" type="co_Pipeline" aggregation="composite" association="assoc_2212">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_2213_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_2213_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_2215" type="co_Constellation" aggregation="none" association="assoc_2212">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_2215_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_2215_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_2216" name="replace" memberEnd="end_2217 back_2219">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_2217" name="replace" visibility="public" type="co_NeedsToReload" aggregation="none" association="assoc_2216">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_2217_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_2217_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_2219" type="co_SessionHistoryChange" aggregation="none" association="assoc_2216">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_2219_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_2219_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2220" name="sends" client="hist_HistoryService" supplier="ah_HistoryCommand"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2221" name="writes through" client="hist_HistoryService" supplier="ah_HistoryStore"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2222" name="applies" client="ah_HistoryStore" supplier="ah_HistoryCommand"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2223" name="sends TitleChanged" client="sc_Document" supplier="co_Constellation"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2224" name="stores the title on" client="co_Constellation" supplier="co_Pipeline"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2225" name="sends" client="co_Constellation" supplier="co_ConstellationToEmbedderMsg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2226" name="carries" client="co_ConstellationToEmbedderMsg" supplier="emb_NavigationType"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2227" name="applied by" client="co_ConstellationToEmbedderMsg" supplier="servo_WebView"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2228" name="notifies" client="servo_WebView" supplier="servo_WebViewDelegate"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2229" name="records visits from" client="state_RunningAppState" supplier="emb_NavigationType"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2230" name="navigates with replace or push" client="sc_Location" supplier="co_SessionHistoryChange"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2231" name="publishes" client="sc_ScriptThread" supplier="pr_ScriptTabStats"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2232" name="writes" client="pr_TabStats" supplier="pr_ScriptTabStats"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_2233" name="joins the script threads" client="proto_ProcessSampler" supplier="pr_ScriptTabStats"/>
   </uml:Model>
 </xmi:XMI>
