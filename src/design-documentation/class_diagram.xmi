@@ -1,0 +1,2171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:uml="http://www.omg.org/spec/UML/20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmi:version="20131001">
+  <uml:Model xmi:id="model" name="aether" visibility="public">
+    <ownedComment xmi:type="uml:Comment" xmi:id="c_1">
+      <body>UML 2.5 class diagram of the ports/aether crate (the Aether shell, based on Servo). Packages follow the Rust modules. Traits are interfaces. Enums are enumerations. Modules with no types are utility classes. The external package holds types from neighboring crates (servo, winit, aether-history) only when aether owns or realizes them. Composition means ownership. Shared aggregation means an Rc or a shared reference.</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_aether" name="aether">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_2">
+        <body>ports/aether crate. Embedder entry point: desktop (winit/egui) or EGL (Android, OpenHarmony).</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_window" name="window">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_3">
+          <body>Logical ServoShellWindow and the PlatformWindow abstraction.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:DataType" xmi:id="win_ServoShellWindowId" name="ServoShellWindowId">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_85">
+            <body>Monotonic shell window identifier.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_86" name="value" visibility="private" type="dt_8"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_87" name="next" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_88" name="return" direction="return" type="win_ServoShellWindowId"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="win_PlatformWindow" name="PlatformWindow">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_89">
+            <body>Abstraction over windows: headed winit, headless, or embedded EGL.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_90" name="id" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_91" name="return" direction="return" type="win_ServoShellWindowId"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_92" name="screen_geometry" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_93" name="return" direction="return" type="dt_9"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_94" name="hidpi_scale_factor" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_95" name="return" direction="return" type="dt_10"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_96" name="rendering_context" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_97" name="return" direction="return" type="servo_RenderingContext"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_98" name="request_repaint" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_99" name="window" direction="in" type="win_ServoShellWindow"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_100" name="request_resize" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_101" name="webview" direction="in" type="servo_WebView"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_102" name="outerSize" direction="in" type="dt_11"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_103" name="return" direction="return" type="dt_11"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_104" name="update_user_interface_state" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_105" name="state" direction="in" type="state_RunningAppState"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_106" name="window" direction="in" type="win_ServoShellWindow"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_107" name="return" direction="return" type="dt_1"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_108" name="show_embedder_control" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_109" name="webviewId" direction="in" type="dt_12"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_110" name="control" direction="in" type="dt_13"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_111" name="theme" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_112" name="return" direction="return" type="dt_14"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_113" name="window_rect" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_114" name="return" direction="return" type="dt_15"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_115" name="has_platform_focus" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_116" name="return" direction="return" type="dt_1"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="win_TopLevelWebViewCreationRequest" name="TopLevelWebViewCreationRequest">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_117">
+            <body>How to create a window's top-level WebView.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_118" name="WithUrl(Url)"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_119" name="WithCreateRequest(CreateNewWebViewRequest)"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="win_ServoShellWindow" name="ServoShellWindow">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_120">
+            <body>Logical window: WebView collection, platform window, and pending interface commands.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_121" name="closeScheduled" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_122" name="needsUpdate" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_123" name="needsRepaint" visibility="private" type="dt_1"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_124" name="new" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_125" name="platformWindow" direction="in" type="win_PlatformWindow"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_126" name="return" direction="return" type="win_ServoShellWindow"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_127" name="id" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_128" name="return" direction="return" type="win_ServoShellWindowId"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_129" name="create_toplevel_webview" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_130" name="state" direction="in" type="state_RunningAppState"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_131" name="creation" direction="in" type="win_TopLevelWebViewCreationRequest"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_132" name="return" direction="return" type="servo_WebView"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_133" name="create_and_activate_toplevel_webview" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_134" name="state" direction="in" type="state_RunningAppState"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_135" name="creation" direction="in" type="win_TopLevelWebViewCreationRequest"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_136" name="return" direction="return" type="servo_WebView"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_137" name="repaint_webviews" visibility="package"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_state" name="running_app_state">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_4">
+          <body>State shared by desktop and EGL: Servo, windows, WebDriver, history.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="state_WebViewCollection" name="WebViewCollection">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_138">
+            <body>Top-level WebViews of a window, creation order, and the active view.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_139" name="hasSystemFocus" visibility="private" type="dt_1"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_140" name="add" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_141" name="webview" direction="in" type="servo_WebView"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_142" name="set_focused" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_143" name="focused" direction="in" type="dt_1"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="state_UserInterfaceCommand" name="UserInterfaceCommand">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_144">
+            <body>Pending interface command, handled by the main loop.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_145" name="Go(String)"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_146" name="Back"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_147" name="Forward"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_148" name="Reload"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_149" name="ReloadAll"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_150" name="Home"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_151" name="NewWebView(TopLevelWebViewCreationRequest)"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_152" name="CloseWebView(WebViewId)"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_153" name="NewWindow(TopLevelWebViewCreationRequest)"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="state_ServoShellServoDelegate" name="ServoShellServoDelegate">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_154">
+            <body>Shell Servo delegate: devtools, errors, console.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_155" name="notify_devtools_server_started" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_156" name="port" direction="in" type="dt_16"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_157" name="token" direction="in" type="dt_7"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_158" name="request_devtools_connection" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_159" name="request" direction="in" type="dt_17"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_160" name="notify_error" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_161" name="error" direction="in" type="dt_18"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_162" name="show_console_message" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_163" name="level" direction="in" type="dt_19"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_164" name="message" direction="in" type="dt_7"/>
+          </ownedOperation>
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_165" client="state_ServoShellServoDelegate" supplier="servo_ServoDelegate" contract="servo_ServoDelegate"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="state_RunningAppState" name="RunningAppState">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_166">
+            <body>Single running state: Servo, windows, preferences, WebDriver, history, accessibility.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_167" name="achievedStableImage" visibility="package" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_168" name="exitScheduled" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_169" name="experimentalPreferencesEnabled" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_170" name="accessibilityActive" visibility="private" type="dt_1"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_171" name="new" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_172" name="servo" direction="in" type="servo_Servo"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_173" name="preferences" direction="in" type="prefs_ServoShellPreferences"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_174" name="waker" direction="in" type="servo_EventLoopWaker"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_175" name="return" direction="return" type="state_RunningAppState"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_176" name="open_window" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_177" name="platformWindow" direction="in" type="win_PlatformWindow"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_178" name="creation" direction="in" type="win_TopLevelWebViewCreationRequest"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_179" name="return" direction="return" type="win_ServoShellWindow"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_180" name="windows" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_181" name="return" direction="return" type="dt_20"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_182" name="focused_window" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_183" name="return" direction="return" type="win_ServoShellWindow"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_184" name="set_window_has_focus" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_185" name="window" direction="in" type="win_ServoShellWindow"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_186" name="hasFocus" direction="in" type="dt_1"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_187" name="spin_event_loop" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_188" name="return" direction="return" type="dt_1"/>
+          </ownedOperation>
+          <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_189" client="state_RunningAppState" supplier="servo_WebViewDelegate" contract="servo_WebViewDelegate"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_history" name="history">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_5">
+          <body>Decides how a committed navigation updates the profile history.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="hist_ActiveEntry" name="ActiveEntry">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_190">
+            <body>Active history entry of a tab.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_191" name="url" visibility="private" type="dt_21"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_192" name="visitDate" visibility="private" type="dt_22"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="hist_HistoryUpdate" name="HistoryUpdate">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_193">
+            <body>Effect of a committed navigation on history.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_194" name="RecordVisit"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_195" name="ReplaceVisit"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="hist_History" name="History">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_196">
+            <body>Rust module of free functions. history_update chooses RecordVisit or ReplaceVisit and returns the new ActiveEntry. open_history opens HistoryService.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_197" name="history_update" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_198" name="active" direction="in" type="hist_ActiveEntry"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_199" name="url" direction="in" type="dt_21"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_200" name="navigationType" direction="in" type="dt_23"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_201" name="return" direction="return" type="hist_HistoryUpdate"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_202" name="open_history" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_203" name="opts" direction="in" type="servo_Opts"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_204" name="return" direction="return" type="hist_HistoryService"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_home" name="home">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_6">
+          <body>Homepage, new-window, and new-tab preferences (home.json).</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="home_NewWindowChoice" name="NewWindowChoice">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_205">
+            <body>What a new window opens. Matches the Firefox Homepage and new windows menu.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_206" name="Home"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_207" name="Url"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_208" name="Blank"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="home_HomeSettings" name="HomeSettings">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_209">
+            <body>Profile home preferences, named like Firefox, stored in home.json.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_210" name="customUrl" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_211" name="startupPage" visibility="private" type="dt_24"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_212" name="newTabsHome" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_213" name="showSearch" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_214" name="showLogo" visibility="public" type="dt_1"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_215" name="new_window_url" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_216" name="return" direction="return" type="dt_7"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_217" name="new_tab_url" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_218" name="return" direction="return" type="dt_7"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="home_InstalledHomeSettings" name="InstalledHomeSettings">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_219">
+            <body>Process-wide copy installed at startup for servo:settings and new tabs.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_220" name="configDir" visibility="private" type="dt_25"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="home_Home" name="Home">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_221">
+            <body>Rust module of free functions. install_home_settings remembers the settings. new_tab_url and new_window_url resolve them.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_222" name="install_home_settings" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_223" name="configDir" direction="in" type="dt_26"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_224" name="settings" direction="in" type="home_HomeSettings"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_225" name="new_tab_url" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_226" name="return" direction="return" type="dt_21"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_227" name="new_window_url" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_228" name="return" direction="return" type="dt_21"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_search" name="search">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_7">
+          <body>Profile search engines (search.json).</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="search_BuiltinEngine" name="BuiltinEngine">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_229">
+            <body>Engine shipped with Aether. The user file refers to it by id.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_230" name="id" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_231" name="name" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_232" name="url" visibility="public" type="dt_7"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="search_SearchEngine" name="SearchEngine">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_233">
+            <body>Configured engine, built-in or added. %s stands in for the query.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_234" name="id" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_235" name="name" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_236" name="url" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_237" name="alias" visibility="public" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_238" name="order" visibility="public" type="dt_27"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_239" name="builtin" visibility="public" type="dt_1"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="search_SearchEngines" name="SearchEngines">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_240">
+            <body>Profile list and default engine. DuckDuckGo when search.json is missing.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_241" name="defaultId" visibility="private" type="dt_7"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_242" name="builtin" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_243" name="return" direction="return" type="search_SearchEngines"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_244" name="default_engine" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_245" name="return" direction="return" type="search_SearchEngine"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_246" name="set_default" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_247" name="id" direction="in" type="dt_7"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_248" name="add_builtin" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_249" name="id" direction="in" type="dt_7"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_250" name="add_user" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_251" name="name" direction="in" type="dt_7"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_252" name="url" direction="in" type="dt_7"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_253" name="remove" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_254" name="id" direction="in" type="dt_7"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="search_InstalledSearchEngines" name="InstalledSearchEngines">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_255">
+            <body>Process-wide copy shared by the location bar and servo:settings.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_256" name="configDir" visibility="private" type="dt_25"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_prefs" name="prefs">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_8">
+          <body>Shell preferences and command-line parsing.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="prefs_ServoShellPreferences" name="ServoShellPreferences">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_257">
+            <body>Shell preferences, distinct from the engine Preferences.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_258" name="url" visibility="public" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_259" name="devicePixelRatioOverride" visibility="public" type="dt_28"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_260" name="cleanShutdown" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_261" name="noNativeTitlebar" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_262" name="homepage" visibility="public" type="dt_7"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_263" name="headless" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_264" name="tracingFilter" visibility="public" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_265" name="initialWindowSize" visibility="public" type="dt_29"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_266" name="screenSizeOverride" visibility="public" type="dt_30"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_267" name="simulateTouchEvents" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_268" name="outputImagePath" visibility="public" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_269" name="exitAfterStableImage" visibility="public" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_270" name="userscriptsDirectory" visibility="public" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_271" name="webdriverPort" visibility="public" type="dt_31"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_272" name="experimentalPreferencesEnabled" visibility="public" type="dt_1"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="prefs_ArgumentParsingResult" name="ArgumentParsingResult">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_273">
+            <body>Result of parse_command_line_arguments.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_274" name="ChromeProcess"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_275" name="ContentProcess(String)"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_276" name="Exit"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_277" name="ErrorParsing"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Enumeration" xmi:id="prefs_ParseResolutionError" name="ParseResolutionError">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_278">
+            <body>Error while parsing a WxH resolution.</body>
+          </ownedComment>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_279" name="InvalidFormat"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_280" name="ZeroDimension"/>
+          <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_281" name="ParseError"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="prefs_CmdArgs" name="CmdArgs">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_282">
+            <body>bpaf command-line arguments (usage servoshell [OPTIONS] URL).</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_283" name="backgroundHangMonitor" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_284" name="certificatePath" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_285" name="cleanShutdown" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_286" name="configDir" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_287" name="contentProcess" visibility="private" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_288" name="debug" visibility="private" type="dt_32"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_289" name="devicePixelRatio" visibility="private" type="dt_28"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_290" name="devtools" visibility="private" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_291" name="enableExperimentalWebPlatformFeatures" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_292" name="exit" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_293" name="forceIpc" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_294" name="hardFail" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_295" name="headless" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_296" name="hostFile" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_297" name="ignoreCertificateErrors" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_298" name="layoutThreads" visibility="private" type="dt_33"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_299" name="localScriptSource" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_300" name="logFilter" visibility="private" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_301" name="logToFile" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_302" name="multiprocess" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_303" name="noNativeTitlebar" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_304" name="output" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_305" name="pref" visibility="private" type="dt_32"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_306" name="prefsFile" visibility="private" type="dt_34"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_307" name="sandbox" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_308" name="screenSizeOverride" visibility="private" type="dt_30"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_309" name="simulateTouchEvents" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_310" name="tracingFilter" visibility="private" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_311" name="unminifyJs" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_312" name="unminifyCss" visibility="private" type="dt_1"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_313" name="userAgent" visibility="private" type="dt_6"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_314" name="userscripts" visibility="private" type="dt_25"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_315" name="webdriverPort" visibility="private" type="dt_31"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_316" name="windowSize" visibility="private" type="dt_30"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="attr_317" name="url" visibility="private" type="dt_7"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_webdriver" name="webdriver">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_9">
+          <body>Virtual embedder controls while WebDriver is active.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="wd_WebDriverEmbedderControls" name="WebDriverEmbedderControls">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_318">
+            <body>Virtual container of embedder controls in WebDriver mode.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_319" name="show_embedder_control" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_320" name="webviewId" direction="in" type="dt_12"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_321" name="control" direction="in" type="dt_13"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_322" name="hide_embedder_control" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_323" name="webviewId" direction="in" type="dt_12"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_324" name="id" direction="in" type="dt_35"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_325" name="current_active_dialog_webdriver_type" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_326" name="webviewId" direction="in" type="dt_12"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_327" name="return" direction="return" type="dt_36"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_desktop" name="desktop">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_10">
+          <body>Headed and headless shell (winit, egui). Built outside Android and OpenHarmony.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_app" name="app">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_11">
+            <body>winit application: initializes Servo, the protocols, and the first window.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="dapp_AppState" name="AppState">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_328">
+              <body>Desktop application lifecycle.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_329" name="Initializing"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_330" name="Running(RunningAppState)"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_331" name="ShuttingDown"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="dapp_App" name="App">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_332">
+              <body>Desktop application. Realizes winit ApplicationHandler.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_333" name="initialUrl" visibility="private" type="dt_21"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_334" name="tStart" visibility="private" type="dt_37"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_335" name="new" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_336" name="opts" direction="in" type="servo_Opts"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_337" name="preferences" direction="in" type="servo_Preferences"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_338" name="shellPrefs" direction="in" type="prefs_ServoShellPreferences"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_339" name="eventLoop" direction="in" type="loop_ServoShellEventLoop"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_340" name="return" direction="return" type="dapp_App"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_341" name="init" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_342" name="eventLoop" direction="in" type="dt_38"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_343" name="pump_servo_event_loop" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_344" name="eventLoop" direction="in" type="dt_38"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_345" name="return" direction="return" type="dt_1"/>
+            </ownedOperation>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_346" client="dapp_App" supplier="winit_ApplicationHandler" contract="winit_ApplicationHandler"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_loop" name="event_loop">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_12">
+            <body>Headed (winit) or headless (condvar) event loop.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="loop_AppEvent" name="AppEvent">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_347">
+              <body>User event injected into the winit loop.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_348" name="Waker"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_349" name="Accessibility"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_350" name="Gamepad"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="loop_ServoShellEventLoop" name="ServoShellEventLoop">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_351">
+              <body>Real winit loop or fake headless loop.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_352" name="Winit(EventLoop&lt;AppEvent&gt;)"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_353" name="Headless(HeadlessEventLoop)"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_354" name="headed" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_355" name="return" direction="return" type="loop_ServoShellEventLoop"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_356" name="headless" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_357" name="return" direction="return" type="loop_ServoShellEventLoop"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_358" name="create_event_loop_waker" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_359" name="return" direction="return" type="servo_EventLoopWaker"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_360" name="run_app" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_361" name="app" direction="in" type="dapp_App"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="loop_HeadedEventLoopWaker" name="HeadedEventLoopWaker">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_362">
+              <body>Sends AppEvent::Waker to the winit proxy.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_363" client="loop_HeadedEventLoopWaker" supplier="servo_EventLoopWaker" contract="servo_EventLoopWaker"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="loop_HeadlessEventLoop" name="HeadlessEventLoop">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_364">
+              <body>Condvar that simulates a windowing event loop without a display server.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_365" name="signalled" visibility="private" type="dt_1"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_366" name="run_app" visibility="private">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_367" name="app" direction="in" type="dapp_App"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="loop_HeadlessEventLoopWaker" name="HeadlessEventLoopWaker">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_368">
+              <body>Sets the flag and notifies the headless condvar.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_369" client="loop_HeadlessEventLoopWaker" supplier="servo_EventLoopWaker" contract="servo_EventLoopWaker"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_gui" name="gui">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_13">
+            <body>egui chrome: toolbar, menu, developer tools.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="gui_Gui" name="Gui">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_370">
+              <body>egui interface of a headed window: toolbar, status, favicons, menu, devtools.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_371" name="toolbarHeight" visibility="private" type="dt_39"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_372" name="location" visibility="private" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_373" name="locationDirty" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_374" name="loadStatus" visibility="private" type="dt_40"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_375" name="statusText" visibility="private" type="dt_6"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_376" name="canGoBack" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_377" name="canGoForward" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_378" name="devtoolsOpen" visibility="private" type="dt_1"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="gui_DevtoolsDock" name="DevtoolsDock">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_379">
+              <body>Developer tools panel produced by chrome rendering, to the right of the page.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_380" name="closeClicked" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_381" name="panelRect" visibility="private" type="dt_41"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_382" name="closeButtonRect" visibility="private" type="dt_41"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_headed" name="headed_window">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_14">
+            <body>winit window that realizes PlatformWindow.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="win_HeadedWindow" name="HeadedWindow">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_439">
+              <body>winit window. Renders Servo offscreen, then composites it into egui.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_440" name="screenSize" visibility="private" type="dt_29"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_441" name="fullscreen" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_442" name="fullscreenFromDocument" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_443" name="devicePixelRatioOverride" visibility="private" type="dt_28"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_444" name="lastTitle" visibility="private" type="dt_7"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_445" name="new" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_446" name="prefs" direction="in" type="prefs_ServoShellPreferences"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_447" name="eventLoop" direction="in" type="dt_38"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_448" name="initialUrl" direction="in" type="dt_21"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_449" name="return" direction="return" type="win_HeadedWindow"/>
+            </ownedOperation>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_450" client="win_HeadedWindow" supplier="win_PlatformWindow" contract="win_PlatformWindow"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="headed_XRWindow" name="XRWindow">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_451">
+              <body>Secondary GL window for WebXR.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_452" client="headed_XRWindow" supplier="servo_GlWindow" contract="servo_GlWindow"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="headed_XRWindowPose" name="XRWindowPose">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_453">
+              <body>Pose of the WebXR window.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_454" name="xrRotation" visibility="private" type="dt_47"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_455" name="xrTranslation" visibility="private" type="dt_48"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="headed_TouchEventSimulator" name="TouchEventSimulator">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_456">
+              <body>Simulates touch events from the mouse when --simulate-touch-events is set.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_457" name="leftMouseButtonDown" visibility="public" type="dt_1"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_headless" name="headless_window">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_15">
+            <body>Window without a display server, software rendering.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="win_HeadlessWindow" name="HeadlessWindow">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_458">
+              <body>Headless window with software rendering.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_459" name="fullscreen" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_460" name="innerSize" visibility="private" type="dt_11"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_461" name="screenSize" visibility="private" type="dt_29"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_462" name="new" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_463" name="prefs" direction="in" type="prefs_ServoShellPreferences"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_464" name="return" direction="return" type="win_HeadlessWindow"/>
+            </ownedOperation>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_465" client="win_HeadlessWindow" supplier="win_PlatformWindow" contract="win_PlatformWindow"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_menu" name="menu">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_16">
+            <body>Hamburger menu in the toolbar.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="menu_AppMenuAction" name="AppMenuAction">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_383">
+              <body>Action chosen in the application menu.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_384" name="NewTab"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_385" name="NewWindow"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_386" name="History"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_387" name="Settings"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_388" name="Processes"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_389" name="DeveloperTools"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_390" name="Exit"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="menu_AppMenuPage" name="AppMenuPage">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_391">
+              <body>Page shown in the menu. Nested pages replace the body without closing the popup.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_392" name="Root"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_393" name="MoreTools"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="menu_AppMenu" name="AppMenu">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_394">
+              <body>Hamburger menu opened from the toolbar.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_395" name="open" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_396" name="rootContentHeight" visibility="private" type="dt_42"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_397" name="is_open" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_398" name="return" direction="return" type="dt_1"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_399" name="close" visibility="package"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_dialog" name="dialog">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_17">
+            <body>Embedder dialogs (alert, file, permission, Bluetooth, …).</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="dlg_Dialog" name="Dialog">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_400">
+              <body>Embedder dialog shown by egui above the page.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_401" name="File"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_402" name="Alert"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_403" name="Confirm"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_404" name="Prompt"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_405" name="Authentication"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_406" name="Permission"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_407" name="SelectDevice"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_408" name="SelectElement"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_409" name="ColorPicker"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_410" name="ContextMenu"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_411" name="new_file_dialog" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_412" name="picker" direction="in" type="dt_43"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_413" name="return" direction="return" type="dlg_Dialog"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_414" name="new_simple_dialog" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_415" name="dialog" direction="in" type="dt_44"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_416" name="return" direction="return" type="dlg_Dialog"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_icons" name="icons">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_18">
+            <body>Toolbar SVG icons, rasterized and cached.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="icon_ToolbarButtonVisualState" name="ToolbarButtonVisualState">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_417">
+              <body>Visual state of a toolbar button.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_418" name="Rest"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_419" name="Hover"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_420" name="Press"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="icon_ToolbarIcon" name="ToolbarIcon">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_421">
+              <body>SVG bundled for the toolbar.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_422" name="Back"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_423" name="ChevronLeft"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_424" name="ChevronRight"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_425" name="Close"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_426" name="Forward"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_427" name="Home"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_428" name="Menu"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_429" name="Plus"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_430" name="Reload"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_431" name="Stop"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="icon_ToolbarIconCache" name="ToolbarIconCache">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_432">
+              <body>Rasterized SVG textures, indexed by icon and pixel size.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_433" name="button" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_434" name="icon" direction="in" type="icon_ToolbarIcon"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_435" name="return" direction="return" type="dt_45"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_436" name="image" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_437" name="icon" direction="in" type="icon_ToolbarIcon"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_438" name="return" direction="return" type="dt_46"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_gamepad" name="gamepad">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_19">
+            <body>Gamepads via gilrs, behind GamepadDelegate.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="game_HapticEffect" name="HapticEffect">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_466">
+              <body>gilrs effect tied to a Servo haptic request.</body>
+            </ownedComment>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="game_ServoshellGamepadDelegate" name="ServoshellGamepadDelegate">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_467">
+              <body>Gamepad delegate. A Gilrs thread turns events into AppEvent::Gamepad.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_468" name="new" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_469" name="proxy" direction="in" type="dt_49"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_470" name="return" direction="return" type="game_ServoshellGamepadDelegate"/>
+            </ownedOperation>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_471" client="game_ServoshellGamepadDelegate" supplier="servo_GamepadDelegate" contract="servo_GamepadDelegate"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_proto" name="protocols">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_20">
+            <body>Handlers for the servo:, resource:, and urlinfo: schemes.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_ServoProtocolHandler" name="ServoProtocolHandler">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_472">
+              <body>servo: scheme (config, preferences, and internal pages).</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_473" client="proto_ServoProtocolHandler" supplier="servo_ProtocolHandler" contract="servo_ProtocolHandler"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_ResourceProtocolHandler" name="ResourceProtocolHandler">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_474">
+              <body>resource: scheme.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_475" client="proto_ResourceProtocolHandler" supplier="servo_ProtocolHandler" contract="servo_ProtocolHandler"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_UrlInfoProtocolHander" name="UrlInfoProtocolHander">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_476">
+              <body>urlinfo: scheme. The name keeps the spelling from the code.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_477" client="proto_UrlInfoProtocolHander" supplier="servo_ProtocolHandler" contract="servo_ProtocolHandler"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_EmbedderTab" name="EmbedderTab">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_478">
+              <body>Tab metadata published by the embedder loop for servo:processes.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_479" name="webviewId" visibility="public" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_480" name="title" visibility="public" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_481" name="url" visibility="public" type="dt_7"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_ProcessSampler" name="ProcessSampler">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_482">
+              <body>Samples the process tree for servo:processes.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_483" name="snapshot_json" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_484" name="return" direction="return" type="dt_7"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="proto_SampleKey" name="SampleKey">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_485">
+              <body>CPU sample key: process or thread.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_486" name="Process(u32)"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_487" name="Thread(u32, u32)"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_RawThread" name="RawThread">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_488">
+              <body>Thread read from /proc or the platform API.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_489" name="tid" visibility="private" type="dt_50"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_490" name="name" visibility="private" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_491" name="cpuTicks" visibility="private" type="dt_8"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_RawProcess" name="RawProcess">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_492">
+              <body>Process read for the snapshot.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_493" name="pid" visibility="private" type="dt_50"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_494" name="ppid" visibility="private" type="dt_50"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_495" name="name" visibility="private" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_496" name="memory" visibility="private" type="dt_51"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_497" name="cpuTicks" visibility="private" type="dt_8"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="proto_StatFields" name="StatFields">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_498">
+              <body>Fields parsed from a Linux stat file.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_499" name="comm" visibility="private" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_500" name="ppid" visibility="private" type="dt_50"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_501" name="cpuTicks" visibility="private" type="dt_8"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_webxr" name="webxr">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_21">
+            <body>WebXR discovery (GL window or OpenXR).</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="xr_XrDiscovery" name="XrDiscovery">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_502">
+              <body>Desktop WebXR discovery backend.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_503" name="GlWindow"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_504" name="OpenXr"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="xr_XrDiscoveryWebXrRegistry" name="XrDiscoveryWebXrRegistry">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_505">
+              <body>Desktop WebXR registry. OpenXR on Windows, otherwise a GL window, plus a headless mock.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_506" client="xr_XrDiscoveryWebXrRegistry" supplier="servo_WebXrRegistry" contract="servo_WebXrRegistry"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="xr_XrPrefObserver" name="XrPrefObserver">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_507">
+              <body>Watches the dom_webxr_test preference.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_508" client="xr_XrPrefObserver" supplier="servo_PreferencesObserver" contract="servo_PreferencesObserver"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_keys" name="keyutils">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_22">
+            <body>Converts winit keyboard events to keyboard-types.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Interface" xmi:id="keys_FromWinitKeyEvent" name="FromWinitKeyEvent">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_509">
+              <body>Converts a winit keyboard event. Implemented by Key, Location, Code, and KeyState from keyboard-types.</body>
+            </ownedComment>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_trace" name="tracing">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_23">
+            <body>Log targets for winit events.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Interface" xmi:id="trace_LogTarget" name="LogTarget">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_510">
+              <body>Static log target of a winit event or AppEvent.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_511" name="log_target" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_512" name="return" direction="return" type="dt_7"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_geom" name="geometry">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_24">
+            <body>Converts winit sizes and positions to euclid.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="geom_Geometry" name="Geometry">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_513">
+              <body>Rust module of free functions. Converts PhysicalSize and PhysicalPosition to euclid.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_514" name="winit_size_to_euclid_size" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_515" name="size" direction="in" type="dt_52"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_516" name="return" direction="return" type="dt_29"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_517" name="winit_position_to_euclid_point" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_518" name="position" direction="in" type="dt_53"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_519" name="return" direction="return" type="dt_54"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_media" name="accelerated_gl_media">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_25">
+            <body>Hooks accelerated GL media up to the surfman device.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="media_AcceleratedGlMedia" name="AcceleratedGlMedia">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_520">
+              <body>Rust module of free functions. setup_gl_accelerated_media connects the media pipeline to the GL device.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_521" name="setup_gl_accelerated_media" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_522" name="device" direction="in" type="dt_55"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_523" name="context" direction="in" type="dt_56"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_d_cli" name="cli">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_26">
+            <body>Desktop main(): crash handler, crypto, argument parsing, loop.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="cli_Cli" name="Cli">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_524">
+              <body>Rust module of free functions. Desktop entry point called by aether::main.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_525" name="main" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_egl" name="egl">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_27">
+          <body>Embedded shell for Android and OpenHarmony.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_e_host" name="host_trait">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_28">
+            <body>Callbacks the native host implements.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Interface" xmi:id="host_HostTrait" name="HostTrait">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_526">
+              <body>Native host callbacks, invoked by the running state on behalf of Servo.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_527" name="show_alert" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_528" name="message" direction="in" type="dt_7"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_529" name="notify_load_status_changed" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_530" name="status" direction="in" type="dt_40"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_531" name="on_title_changed" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_532" name="title" direction="in" type="dt_6"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_533" name="on_url_changed" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_534" name="url" direction="in" type="dt_7"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_535" name="on_history_changed" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_536" name="canGoBack" direction="in" type="dt_1"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_537" name="canGoForward" direction="in" type="dt_1"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_538" name="on_shutdown_complete" visibility="public"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_539" name="on_ime_show" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_540" name="control" direction="in" type="dt_57"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_541" name="on_ime_hide" visibility="public"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_542" name="on_media_session_metadata" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_543" name="title" direction="in" type="dt_7"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_544" name="artist" direction="in" type="dt_7"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_545" name="album" direction="in" type="dt_7"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_546" name="on_media_session_playback_state_change" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_547" name="state" direction="in" type="dt_58"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_548" name="on_show_select_element" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_549" name="webviewId" direction="in" type="dt_12"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_550" name="prompt" direction="in" type="dt_59"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_551" name="on_panic" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_552" name="reason" direction="in" type="dt_7"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_553" name="backtrace" direction="in" type="dt_6"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_e_app" name="app">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_29">
+            <body>EGL application, embedded window, and vsync driver.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="egl_EmbeddedPlatformWindow" name="EmbeddedPlatformWindow">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_554">
+              <body>PlatformWindow for a native Android or OpenHarmony surface.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_555" name="hidpiScaleFactor" visibility="private" type="dt_10"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_556" name="currentTitle" visibility="private" type="dt_6"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_557" name="currentUrl" visibility="private" type="dt_60"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_558" name="currentCanGoBack" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_559" name="currentCanGoForward" visibility="private" type="dt_1"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_560" name="currentLoadStatus" visibility="private" type="dt_61"/>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_561" client="egl_EmbeddedPlatformWindow" supplier="win_PlatformWindow" contract="win_PlatformWindow"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="egl_VsyncRefreshDriver" name="VsyncRefreshDriver">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_562">
+              <body>Queues frame callbacks and requests a vsync. On OpenHarmony it owns OH_NativeVSync.</body>
+            </ownedComment>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_563" name="notify_vsync" visibility="private"/>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_564" client="egl_VsyncRefreshDriver" supplier="servo_RefreshDriver" contract="servo_RefreshDriver"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="egl_AppInitOptions" name="AppInitOptions">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_565">
+              <body>Construction parameters of the EGL application.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_566" name="initialUrl" visibility="public" type="dt_6"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="egl_App" name="App">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_567">
+              <body>Embedded application. One window for now, unlike the desktop shell.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_568" name="initialUrl" visibility="private" type="dt_21"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_569" name="new" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_570" name="init" direction="in" type="egl_AppInitOptions"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_571" name="return" direction="return" type="egl_App"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_572" name="add_platform_window" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_573" name="display" direction="in" type="dt_62"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_574" name="window" direction="in" type="dt_63"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_575" name="servo" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_576" name="return" direction="return" type="servo_Servo"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_577" name="window" visibility="package">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_578" name="return" direction="return" type="win_ServoShellWindow"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="egl_XrDiscoveryWebXrRegistry" name="XrDiscoveryWebXrRegistry">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_579">
+              <body>EGL WebXR registry. Registers an optional Discovery supplied by the host.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_580" client="egl_XrDiscoveryWebXrRegistry" supplier="servo_WebXrRegistry" contract="servo_WebXrRegistry"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_e_and" name="android">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_30">
+            <body>Android JNI: surface, keyboard, wakeup.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="and_HostCallbacks" name="HostCallbacks">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_581">
+              <body>Android HostTrait, calls back into a global Java object.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_582" name="jvm" visibility="private" type="dt_64"/>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_583" client="and_HostCallbacks" supplier="host_HostTrait" contract="host_HostTrait"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="and_KeyCode" name="KeyCode">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_584">
+              <body>Subset of Android KeyEvent translated to keyboard-types::Key.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_585" name="Delete"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_586" name="ForwardDelete"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_587" name="Enter"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_588" name="ArrowLeft"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_589" name="ArrowRight"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_590" name="ArrowUp"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_591" name="ArrowDown"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="and_WakeupCallback" name="WakeupCallback">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_592">
+              <body>Android EventLoopWaker: wakes the JNI thread.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_593" client="and_WakeupCallback" supplier="servo_EventLoopWaker" contract="servo_EventLoopWaker"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_e_ohos" name="ohos">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_31">
+            <body>OpenHarmony: XComponent, IME, Servo action channel.</body>
+          </ownedComment>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_NativeValues" name="NativeValues">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_594">
+              <body>Values read once on the OpenHarmony device.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_595" name="cacheDir" visibility="private" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_596" name="displayDensity" visibility="private" type="dt_42"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_597" name="deviceType" visibility="private" type="dt_65"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_598" name="osFullName" visibility="private" type="dt_7"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_InitOpts" name="InitOpts">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_599">
+              <body>N-API options passed by the Ability application.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_600" name="url" visibility="public" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_601" name="resourceDir" visibility="public" type="dt_7"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_602" name="commandlineArgs" visibility="public" type="dt_7"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="ohos_CallError" name="CallError">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_603">
+              <body>Failure sending on the Servo action channel.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_604" name="ChannelNotInitialized"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_605" name="ChannelDied"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_XComponentWrapper" name="XComponentWrapper">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_606">
+              <body>OH_NativeXComponent pointer.</body>
+            </ownedComment>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_WindowWrapper" name="WindowWrapper">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_607">
+              <body>Native window pointer.</body>
+            </ownedComment>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="ohos_TouchEventType" name="TouchEventType">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_608">
+              <body>Phase of an XComponent touch.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_609" name="Down"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_610" name="Up"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_611" name="Move"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_612" name="Cancel"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_613" name="Unknown"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="ohos_ServoAction" name="ServoAction">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_614">
+              <body>Message from the OpenHarmony UI thread to the Servo thread.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_615" name="WakeUp"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_616" name="LoadUrl(String)"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_617" name="GoBack"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_618" name="GoForward"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_619" name="TouchEvent"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_620" name="KeyEvent"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_621" name="InsertText(String)"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_622" name="ImeDeleteForward"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_623" name="ImeDeleteBackward"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_624" name="ImeSendEnter"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_625" name="ImeDismiss"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_626" name="Vsync"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_627" name="Resize"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_628" name="FocusWindow"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_629" name="CreatePlatformWindow"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_630" name="RemovePlatformWindow"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_OhosImeOptions" name="OhosImeOptions">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_631">
+              <body>Input type and Enter key translated for the OpenHarmony IME.</body>
+            </ownedComment>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_WakeupCallback" name="WakeupCallback">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_632">
+              <body>OpenHarmony EventLoopWaker: sends ServoAction::WakeUp.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_633" client="ohos_WakeupCallback" supplier="servo_EventLoopWaker" contract="servo_EventLoopWaker"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_HostCallbacks" name="HostCallbacks">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_634">
+              <body>OpenHarmony HostTrait. Holds the IME proxy.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_635" client="ohos_HostCallbacks" supplier="host_HostTrait" contract="host_HostTrait"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="ohos_ImeError" name="ImeError">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_636">
+              <body>Failure creating the editor or the IME proxy.</body>
+            </ownedComment>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_637" name="TextEditorProxy"/>
+            <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="lit_638" name="ImeProxy"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_ServoIme" name="ServoIme">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_639">
+              <body>IME editor that translates insert, delete, and Enter into ServoAction.</body>
+            </ownedComment>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_640" client="ohos_ServoIme" supplier="ohos_Ime" contract="ohos_Ime"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="ohos_ResourceReaderImpl" name="ResourceReaderImpl">
+            <ownedComment xmi:type="uml:Comment" xmi:id="c_641">
+              <body>Reads named resources from the directory supplied by the Ability.</body>
+            </ownedComment>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="attr_642" name="resourceDir" visibility="private" type="dt_26"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="op_643" name="read" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_644" name="resource" direction="in" type="dt_66"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="p_645" name="return" direction="return" type="dt_67"/>
+            </ownedOperation>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_646" client="ohos_ResourceReaderImpl" supplier="servo_ResourceReaderMethods" contract="servo_ResourceReaderMethods"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_parser" name="parser">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_32">
+          <body>Interprets the location bar: URL, file, domain, or search.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="parser_Parser" name="Parser">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_647">
+            <body>Rust module of free functions. parse_url_or_filename, get_default_url, location_bar_input_to_url.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_648" name="parse_url_or_filename" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_649" name="cwd" direction="in" type="dt_68"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_650" name="input" direction="in" type="dt_7"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_651" name="return" direction="return" type="dt_21"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_652" name="get_default_url" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_653" name="url" direction="in" type="dt_7"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_654" name="prefs" direction="in" type="prefs_ServoShellPreferences"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_655" name="return" direction="return" type="dt_21"/>
+          </ownedOperation>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_656" name="location_bar_input_to_url" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_657" name="request" direction="in" type="dt_7"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_658" name="searchPage" direction="in" type="dt_7"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_659" name="return" direction="return" type="dt_21"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_resources" name="resources">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_33">
+          <body>Resolves the bundled resources directory.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="res_Resources" name="Resources">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_660">
+            <body>Rust module of free functions. resource_protocol_dir_path resolves ./resources or ./Resources next to the executable.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_661" name="resource_protocol_dir_path" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_662" name="return" direction="return" type="dt_26"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_crash" name="crash_handler">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_34">
+          <body>Installs the crash handler (except on Android).</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="crash_CrashHandler" name="CrashHandler">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_663">
+            <body>Rust module of free functions. install at startup. raise_signal_or_exit_with_error on platforms that support it.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_664" name="install" visibility="public"/>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_665" name="raise_signal_or_exit_with_error" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_666" name="signal" direction="in" type="dt_24"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_panic" name="panic_hook">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_35">
+          <body>Panic hook that logs the stack.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="panic_PanicHook" name="PanicHook">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_667">
+            <body>Rust module of free functions. panic_hook logs PanicHookInfo.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_668" name="panic_hook" visibility="package">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_669" name="info" direction="in" type="dt_69"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_platform" name="platform">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_36">
+          <body>Platform-specific shutdown. macOS has a real implementation.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="plat_Macos" name="Macos">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_670">
+            <body>Rust module of free functions. deinit(clean_shutdown) on macOS. Other OSes have an empty deinit in lib.rs.</body>
+          </ownedComment>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="op_671" name="deinit" visibility="public">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="p_672" name="cleanShutdown" direction="in" type="dt_1"/>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_backtrace" name="backtrace">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_37">
+          <body>Stack printing for the panic hook.</body>
+        </ownedComment>
+        <packagedElement xmi:type="uml:Class" xmi:id="bt_Print" name="Print">
+          <ownedComment xmi:type="uml:Comment" xmi:id="c_673">
+            <body>Debug formatter for a call stack.</body>
+          </ownedComment>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="aether_Aether" name="Aether">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_74">
+          <body>Rust module of free functions. lib.rs functions: startup, crypto, tracing, version.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_75" name="main" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_76" name="init_crypto" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_77" name="init_tracing" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_78" name="filterDirectives" direction="in" type="dt_6"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_79" name="version" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_80" name="return" direction="return" type="dt_7"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="aether_HitraceLayer" name="HitraceLayer">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_81">
+          <body>Tracing layer that maps servo_profiling spans to HiTrace (OpenHarmony, tracing-hitrace feature).</body>
+        </ownedComment>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="ir_82" client="aether_HitraceLayer" supplier="tracing_Layer" contract="tracing_Layer"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="aether_HitraceFields" name="HitraceFields">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_83">
+          <body>Span field visitor, serialized for HiTrace.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="attr_84" name="fields" visibility="private" type="dt_7"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_ext" name="external">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_38">
+        <body>Types defined outside ports/aether, referenced by composition, aggregation, or realization.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="servo_Servo" name="Servo">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_40">
+          <body>Servo engine instance (servo crate).</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="servo_WebView" name="WebView">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_41">
+          <body>Top-level web view (servo crate).</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_WebViewDelegate" name="WebViewDelegate">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_42">
+          <body>Notifications from a WebView to the embedder.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_ServoDelegate" name="ServoDelegate">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_43">
+          <body>Global Servo notifications.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_ProtocolHandler" name="ProtocolHandler">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_44">
+          <body>Loader for a custom URL scheme.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_45" name="privileged_paths" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_46" name="return" direction="return" type="dt_0"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_47" name="is_fetchable" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_48" name="return" direction="return" type="dt_1"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_49" name="load" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_50" name="request" direction="in" type="dt_2"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_51" name="doneChan" direction="in" type="dt_3"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_52" name="context" direction="in" type="dt_4"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_EventLoopWaker" name="EventLoopWaker">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_53">
+          <body>Wakes the embedder event loop.</body>
+        </ownedComment>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_54" name="wake" visibility="public"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="op_55" name="clone_box" visibility="public">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="p_56" name="return" direction="return" type="dt_5"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_RefreshDriver" name="RefreshDriver">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_57">
+          <body>Frame refresh driver.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_WebXrRegistry" name="WebXrRegistry">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_58">
+          <body>Registers WebXR discoveries.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_PreferencesObserver" name="PreferencesObserver">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_59">
+          <body>Servo preferences observer.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_GamepadDelegate" name="GamepadDelegate">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_60">
+          <body>Gamepad haptic effects.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_GlWindow" name="GlWindow">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_61">
+          <body>WebXR GL render target.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_ResourceReaderMethods" name="ResourceReaderMethods">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_62">
+          <body>Reads Servo's named resources.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="servo_Preferences" name="Preferences">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_63">
+          <body>Servo engine preferences.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="servo_Opts" name="Opts">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_64">
+          <body>Servo startup options.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="servo_UserContentManager" name="UserContentManager">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_65">
+          <body>User scripts and stylesheets.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="servo_RenderingContext" name="RenderingContext">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_66">
+          <body>Rendering context shared by the WebViews of a window.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="hist_HistoryService" name="HistoryService">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_67">
+          <body>Profile history (aether-history crate).</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="winit_ApplicationHandler" name="ApplicationHandler">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_68">
+          <body>winit application handler.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="winit_Window" name="Window">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_69">
+          <body>Native winit window.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="tracing_Layer" name="Layer">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_70">
+          <body>tracing-subscriber layer.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="ohos_Ime" name="Ime">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_71">
+          <body>OpenHarmony input method editor.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="kb_Key" name="Key">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_72">
+          <body>keyboard-types key.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="egui_EguiGlow" name="EguiGlow">
+        <ownedComment xmi:type="uml:Comment" xmi:id="c_73">
+          <body>egui context rendered with glow.</body>
+        </ownedComment>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_types" name="types_rust">
+      <ownedComment xmi:type="uml:Comment" xmi:id="c_39">
+        <body>Scalar or standard-library Rust types used as attributes, created on demand.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_0" name="String[]"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_1" name="Boolean"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_2" name="Request"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_3" name="DoneChannel"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_4" name="FetchContext"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_5" name="EventLoopWaker"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_6" name="Option&lt;String&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_7" name="String"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_8" name="u64"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_9" name="ScreenGeometry"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_10" name="Scale"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_11" name="DeviceIntSize"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_12" name="WebViewId"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_13" name="EmbedderControl"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_14" name="Theme"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_15" name="DeviceIndependentIntRect"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_16" name="u16"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_17" name="AllowOrDenyRequest"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_18" name="ServoError"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_19" name="ConsoleLogLevel"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_20" name="win_ServoShellWindow[]"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_21" name="Url"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_22" name="Option&lt;SystemTime&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_23" name="NavigationType"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_24" name="Integer"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_25" name="Option&lt;PathBuf&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_26" name="PathBuf"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_27" name="Option&lt;u32&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_28" name="Option&lt;f32&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_29" name="Size2D"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_30" name="Option&lt;Size2D&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_31" name="Option&lt;u16&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_32" name="Vec&lt;String&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_33" name="Option&lt;i64&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_34" name="Vec&lt;PathBuf&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_35" name="EmbedderControlId"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_36" name="WebDriverUserPrompt"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_37" name="Instant"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_38" name="ActiveEventLoop"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_39" name="Length"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_40" name="LoadStatus"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_41" name="Rect"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_42" name="Real"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_43" name="FilePicker"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_44" name="SimpleDialog"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_45" name="Response"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_46" name="Image"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_47" name="Rotation3D"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_48" name="Vector3D"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_49" name="EventLoopProxy"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_50" name="u32"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_51" name="Option&lt;u64&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_52" name="PhysicalSize"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_53" name="PhysicalPosition"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_54" name="Point2D"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_55" name="Device"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_56" name="Context"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_57" name="InputMethodControl"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_58" name="MediaSessionPlaybackState"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_59" name="SelectElement"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_60" name="Option&lt;Url&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_61" name="Option&lt;LoadStatus&gt;"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_62" name="DisplayHandle"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_63" name="WindowHandle"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_64" name="JavaVM"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_65" name="OhosDeviceType"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_66" name="Resource"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_67" name="u8[]"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_68" name="Path"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="dt_69" name="PanicHookInfo"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_674" name="fields" memberEnd="end_675 back_677">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_675" name="fields" visibility="private" type="aether_HitraceFields" aggregation="composite" association="assoc_674">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_675_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_675_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_677" type="aether_HitraceLayer" aggregation="none" association="assoc_674">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_677_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_677_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_678" name="webviewCollection" memberEnd="end_679 back_681">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_679" name="webviewCollection" visibility="private" type="state_WebViewCollection" aggregation="composite" association="assoc_678">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_679_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_679_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_681" type="win_ServoShellWindow" aggregation="none" association="assoc_678">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_681_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_681_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_682" name="platformWindow" memberEnd="end_683 back_685">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_683" name="platformWindow" visibility="private" type="win_PlatformWindow" aggregation="shared" association="assoc_682">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_683_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_683_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_685" type="win_ServoShellWindow" aggregation="none" association="assoc_682">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_685_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_685_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_686" name="pendingCommands" memberEnd="end_687 back_689">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_687" name="pendingCommands" visibility="private" type="state_UserInterfaceCommand" aggregation="composite" association="assoc_686">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_687_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_687_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_689" type="win_ServoShellWindow" aggregation="none" association="assoc_686">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_689_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_689_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_690" name="activeEntries" memberEnd="end_691 back_693">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_691" name="activeEntries" visibility="private" type="hist_ActiveEntry" aggregation="composite" association="assoc_690">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_691_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_691_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_693" type="win_ServoShellWindow" aggregation="none" association="assoc_690">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_693_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_693_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_694" name="webviews" memberEnd="end_695 back_697">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_695" name="webviews" visibility="private" type="servo_WebView" aggregation="shared" association="assoc_694">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_695_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_695_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_697" type="win_ServoShellWindow" aggregation="none" association="assoc_694">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_697_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_697_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_698" name="webviews" memberEnd="end_699 back_701">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_699" name="webviews" visibility="private" type="servo_WebView" aggregation="shared" association="assoc_698">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_699_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_699_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_701" type="state_WebViewCollection" aggregation="none" association="assoc_698">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_701_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_701_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_702" name="windows" memberEnd="end_703 back_705">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_703" name="windows" visibility="private" type="win_ServoShellWindow" aggregation="composite" association="assoc_702">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_703_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_703_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_705" type="state_RunningAppState" aggregation="none" association="assoc_702">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_705_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_705_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_706" name="focusedWindow" memberEnd="end_707 back_709">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_707" name="focusedWindow" visibility="private" type="win_ServoShellWindow" aggregation="shared" association="assoc_706">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_707_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_707_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_709" type="state_RunningAppState" aggregation="none" association="assoc_706">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_709_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_709_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_710" name="servo" memberEnd="end_711 back_713">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_711" name="servo" visibility="private" type="servo_Servo" aggregation="shared" association="assoc_710">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_711_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_711_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_713" type="state_RunningAppState" aggregation="none" association="assoc_710">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_713_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_713_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_714" name="servoshellPreferences" memberEnd="end_715 back_717">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_715" name="servoshellPreferences" visibility="private" type="prefs_ServoShellPreferences" aggregation="composite" association="assoc_714">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_715_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_715_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_717" type="state_RunningAppState" aggregation="none" association="assoc_714">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_717_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_717_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_718" name="userContentManager" memberEnd="end_719 back_721">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_719" name="userContentManager" visibility="private" type="servo_UserContentManager" aggregation="shared" association="assoc_718">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_719_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_719_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_721" type="state_RunningAppState" aggregation="none" association="assoc_718">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_721_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_721_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_722" name="history" memberEnd="end_723 back_725">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_723" name="history" visibility="private" type="hist_HistoryService" aggregation="composite" association="assoc_722">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_723_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_723_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_725" type="state_RunningAppState" aggregation="none" association="assoc_722">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_725_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_725_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_726" name="webdriverEmbedderControls" memberEnd="end_727 back_729">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_727" name="webdriverEmbedderControls" visibility="private" type="wd_WebDriverEmbedderControls" aggregation="composite" association="assoc_726">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_727_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_727_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_729" type="state_RunningAppState" aggregation="none" association="assoc_726">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_729_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_729_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_730" name="gamepadDelegate" memberEnd="end_731 back_733">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_731" name="gamepadDelegate" visibility="private" type="game_ServoshellGamepadDelegate" aggregation="shared" association="assoc_730">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_731_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_731_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_733" type="state_RunningAppState" aggregation="none" association="assoc_730">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_733_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_733_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_734" name="servoDelegate" memberEnd="end_735 back_737">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_735" name="servoDelegate" visibility="private" type="state_ServoShellServoDelegate" aggregation="composite" association="assoc_734">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_735_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_735_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_737" type="state_RunningAppState" aggregation="none" association="assoc_734">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_737_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_737_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_738" name="newWindows" memberEnd="end_739 back_741">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_739" name="newWindows" visibility="private" type="home_NewWindowChoice" aggregation="composite" association="assoc_738">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_739_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_739_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_741" type="home_HomeSettings" aggregation="none" association="assoc_738">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_741_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_741_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_742" name="settings" memberEnd="end_743 back_745">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_743" name="settings" visibility="private" type="home_HomeSettings" aggregation="composite" association="assoc_742">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_743_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_743_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_745" type="home_InstalledHomeSettings" aggregation="none" association="assoc_742">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_745_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_745_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_746" name="engines" memberEnd="end_747 back_749">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_747" name="engines" visibility="private" type="search_SearchEngine" aggregation="composite" association="assoc_746">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_747_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_747_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_749" type="search_SearchEngines" aggregation="none" association="assoc_746">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_749_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_749_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_750" name="engines" memberEnd="end_751 back_753">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_751" name="engines" visibility="private" type="search_SearchEngines" aggregation="composite" association="assoc_750">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_751_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_751_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_753" type="search_InstalledSearchEngines" aggregation="none" association="assoc_750">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_753_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_753_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_754" name="homeSettings" memberEnd="end_755 back_757">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_755" name="homeSettings" visibility="private" type="home_HomeSettings" aggregation="composite" association="assoc_754">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_755_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_755_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_757" type="prefs_ServoShellPreferences" aggregation="none" association="assoc_754">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_757_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_757_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_758" name="searchEngines" memberEnd="end_759 back_761">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_759" name="searchEngines" visibility="private" type="search_SearchEngines" aggregation="composite" association="assoc_758">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_759_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_759_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_761" type="prefs_ServoShellPreferences" aggregation="none" association="assoc_758">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_761_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_761_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_762" name="opts" memberEnd="end_763 back_765">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_763" name="opts" visibility="private" type="servo_Opts" aggregation="composite" association="assoc_762">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_763_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_763_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_765" type="prefs_ArgumentParsingResult" aggregation="none" association="assoc_762">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_765_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_765_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_766" name="preferences" memberEnd="end_767 back_769">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_767" name="preferences" visibility="private" type="servo_Preferences" aggregation="composite" association="assoc_766">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_767_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_767_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_769" type="prefs_ArgumentParsingResult" aggregation="none" association="assoc_766">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_769_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_769_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_770" name="servoshellPreferences" memberEnd="end_771 back_773">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_771" name="servoshellPreferences" visibility="private" type="prefs_ServoShellPreferences" aggregation="composite" association="assoc_770">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_771_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_771_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_773" type="prefs_ArgumentParsingResult" aggregation="none" association="assoc_770">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_773_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_773_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_774" name="running" memberEnd="end_775 back_777">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_775" name="running" visibility="private" type="state_RunningAppState" aggregation="shared" association="assoc_774">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_775_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_775_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_777" type="dapp_AppState" aggregation="none" association="assoc_774">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_777_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_777_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_778" name="opts" memberEnd="end_779 back_781">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_779" name="opts" visibility="private" type="servo_Opts" aggregation="composite" association="assoc_778">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_779_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_779_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_781" type="dapp_App" aggregation="none" association="assoc_778">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_781_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_781_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_782" name="preferences" memberEnd="end_783 back_785">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_783" name="preferences" visibility="private" type="servo_Preferences" aggregation="composite" association="assoc_782">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_783_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_783_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_785" type="dapp_App" aggregation="none" association="assoc_782">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_785_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_785_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_786" name="servoshellPreferences" memberEnd="end_787 back_789">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_787" name="servoshellPreferences" visibility="private" type="prefs_ServoShellPreferences" aggregation="composite" association="assoc_786">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_787_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_787_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_789" type="dapp_App" aggregation="none" association="assoc_786">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_789_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_789_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_790" name="waker" memberEnd="end_791 back_793">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_791" name="waker" visibility="private" type="servo_EventLoopWaker" aggregation="shared" association="assoc_790">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_791_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_791_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_793" type="dapp_App" aggregation="none" association="assoc_790">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_793_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_793_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_794" name="state" memberEnd="end_795 back_797">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_795" name="state" visibility="private" type="dapp_AppState" aggregation="composite" association="assoc_794">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_795_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_795_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_797" type="dapp_App" aggregation="none" association="assoc_794">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_797_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_797_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_798" name="headlessLoop" memberEnd="end_799 back_801">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_799" name="headlessLoop" visibility="private" type="loop_HeadlessEventLoop" aggregation="shared" association="assoc_798">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_799_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_799_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_801" type="loop_ServoShellEventLoop" aggregation="none" association="assoc_798">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_801_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_801_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_802" name="loop" memberEnd="end_803 back_805">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_803" name="loop" visibility="private" type="loop_HeadlessEventLoop" aggregation="shared" association="assoc_802">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_803_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_803_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_805" type="loop_HeadlessEventLoopWaker" aggregation="none" association="assoc_802">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_805_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_805_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_806" name="context" memberEnd="end_807 back_809">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_807" name="context" visibility="private" type="egui_EguiGlow" aggregation="composite" association="assoc_806">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_807_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_807_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_809" type="gui_Gui" aggregation="none" association="assoc_806">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_809_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_809_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_810" name="appMenu" memberEnd="end_811 back_813">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_811" name="appMenu" visibility="private" type="menu_AppMenu" aggregation="composite" association="assoc_810">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_811_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_811_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_813" type="gui_Gui" aggregation="none" association="assoc_810">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_813_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_813_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_814" name="toolbarIcons" memberEnd="end_815 back_817">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_815" name="toolbarIcons" visibility="private" type="icon_ToolbarIconCache" aggregation="composite" association="assoc_814">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_815_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_815_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_817" type="gui_Gui" aggregation="none" association="assoc_814">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_817_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_817_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_818" name="renderingContext" memberEnd="end_819 back_821">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_819" name="renderingContext" visibility="private" type="servo_RenderingContext" aggregation="shared" association="assoc_818">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_819_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_819_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_821" type="gui_Gui" aggregation="none" association="assoc_818">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_821_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_821_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_822" name="page" memberEnd="end_823 back_825">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_823" name="page" visibility="private" type="menu_AppMenuPage" aggregation="composite" association="assoc_822">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_823_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_823_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_825" type="menu_AppMenu" aggregation="none" association="assoc_822">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_825_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_825_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_826" name="icons" memberEnd="end_827 back_829">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_827" name="icons" visibility="private" type="icon_ToolbarIcon" aggregation="shared" association="assoc_826">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_827_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_827_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_829" type="icon_ToolbarIconCache" aggregation="none" association="assoc_826">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_829_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_829_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_830" name="gui" memberEnd="end_831 back_833">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_831" name="gui" visibility="private" type="gui_Gui" aggregation="composite" association="assoc_830">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_831_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_831_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_833" type="win_HeadedWindow" aggregation="none" association="assoc_830">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_833_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_833_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_834" name="dialogs" memberEnd="end_835 back_837">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_835" name="dialogs" visibility="private" type="dlg_Dialog" aggregation="composite" association="assoc_834">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_835_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_835_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_837" type="win_HeadedWindow" aggregation="none" association="assoc_834">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_837_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_837_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_838" name="touchEventSimulator" memberEnd="end_839 back_841">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_839" name="touchEventSimulator" visibility="private" type="headed_TouchEventSimulator" aggregation="composite" association="assoc_838">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_839_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_839_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_841" type="win_HeadedWindow" aggregation="none" association="assoc_838">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_841_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_841_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_842" name="xrWindowPoses" memberEnd="end_843 back_845">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_843" name="xrWindowPoses" visibility="private" type="headed_XRWindowPose" aggregation="composite" association="assoc_842">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_843_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_843_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_845" type="win_HeadedWindow" aggregation="none" association="assoc_842">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_845_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_845_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_846" name="winitWindow" memberEnd="end_847 back_849">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_847" name="winitWindow" visibility="private" type="winit_Window" aggregation="composite" association="assoc_846">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_847_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_847_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_849" type="win_HeadedWindow" aggregation="none" association="assoc_846">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_849_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_849_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_850" name="renderingContext" memberEnd="end_851 back_853">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_851" name="renderingContext" visibility="private" type="servo_RenderingContext" aggregation="shared" association="assoc_850">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_851_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_851_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_853" type="win_HeadedWindow" aggregation="none" association="assoc_850">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_853_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_853_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_854" name="windowRenderingContext" memberEnd="end_855 back_857">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_855" name="windowRenderingContext" visibility="private" type="servo_RenderingContext" aggregation="shared" association="assoc_854">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_855_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_855_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_857" type="win_HeadedWindow" aggregation="none" association="assoc_854">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_857_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_857_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_858" name="winitWindow" memberEnd="end_859 back_861">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_859" name="winitWindow" visibility="private" type="winit_Window" aggregation="composite" association="assoc_858">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_859_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_859_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_861" type="headed_XRWindow" aggregation="none" association="assoc_858">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_861_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_861_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_862" name="pose" memberEnd="end_863 back_865">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_863" name="pose" visibility="private" type="headed_XRWindowPose" aggregation="shared" association="assoc_862">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_863_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_863_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_865" type="headed_XRWindow" aggregation="none" association="assoc_862">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_865_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_865_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_866" name="id" memberEnd="end_867 back_869">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_867" name="id" visibility="private" type="win_ServoShellWindowId" aggregation="composite" association="assoc_866">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_867_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_867_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_869" type="win_HeadlessWindow" aggregation="none" association="assoc_866">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_869_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_869_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_870" name="renderingContext" memberEnd="end_871 back_873">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_871" name="renderingContext" visibility="private" type="servo_RenderingContext" aggregation="shared" association="assoc_870">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_871_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_871_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_873" type="win_HeadlessWindow" aggregation="none" association="assoc_870">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_873_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_873_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_874" name="effects" memberEnd="end_875 back_877">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_875" name="effects" visibility="private" type="game_HapticEffect" aggregation="composite" association="assoc_874">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_875_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_875_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_877" type="game_ServoshellGamepadDelegate" aggregation="none" association="assoc_874">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_877_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_877_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_878" name="processSampler" memberEnd="end_879 back_881">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_879" name="processSampler" visibility="private" type="proto_ProcessSampler" aggregation="composite" association="assoc_878">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_879_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_879_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_881" type="proto_ServoProtocolHandler" aggregation="none" association="assoc_878">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_881_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_881_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_882" name="threads" memberEnd="end_883 back_885">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_883" name="threads" visibility="private" type="proto_RawThread" aggregation="composite" association="assoc_882">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_883_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_883_hi" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_885" type="proto_RawProcess" aggregation="none" association="assoc_882">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_885_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_885_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_886" name="discovery" memberEnd="end_887 back_889">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_887" name="discovery" visibility="private" type="xr_XrDiscovery" aggregation="composite" association="assoc_886">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_887_lo" value="0"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_887_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_889" type="xr_XrDiscoveryWebXrRegistry" aggregation="none" association="assoc_886">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_889_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_889_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_890" name="host" memberEnd="end_891 back_893">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_891" name="host" visibility="private" type="host_HostTrait" aggregation="shared" association="assoc_890">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_891_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_891_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_893" type="egl_EmbeddedPlatformWindow" aggregation="none" association="assoc_890">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_893_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_893_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_894" name="refreshDriver" memberEnd="end_895 back_897">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_895" name="refreshDriver" visibility="private" type="egl_VsyncRefreshDriver" aggregation="shared" association="assoc_894">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_895_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_895_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_897" type="egl_EmbeddedPlatformWindow" aggregation="none" association="assoc_894">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_897_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_897_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_898" name="renderingContext" memberEnd="end_899 back_901">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_899" name="renderingContext" visibility="private" type="servo_RenderingContext" aggregation="shared" association="assoc_898">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_899_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_899_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_901" type="egl_EmbeddedPlatformWindow" aggregation="none" association="assoc_898">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_901_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_901_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_902" name="id" memberEnd="end_903 back_905">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_903" name="id" visibility="private" type="win_ServoShellWindowId" aggregation="composite" association="assoc_902">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_903_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_903_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_905" type="egl_EmbeddedPlatformWindow" aggregation="none" association="assoc_902">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_905_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_905_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_906" name="host" memberEnd="end_907 back_909">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_907" name="host" visibility="private" type="host_HostTrait" aggregation="shared" association="assoc_906">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_907_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_907_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_909" type="egl_AppInitOptions" aggregation="none" association="assoc_906">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_909_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_909_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_910" name="eventLoopWaker" memberEnd="end_911 back_913">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_911" name="eventLoopWaker" visibility="private" type="servo_EventLoopWaker" aggregation="shared" association="assoc_910">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_911_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_911_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_913" type="egl_AppInitOptions" aggregation="none" association="assoc_910">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_913_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_913_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_914" name="opts" memberEnd="end_915 back_917">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_915" name="opts" visibility="private" type="servo_Opts" aggregation="composite" association="assoc_914">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_915_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_915_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_917" type="egl_AppInitOptions" aggregation="none" association="assoc_914">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_917_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_917_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_918" name="preferences" memberEnd="end_919 back_921">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_919" name="preferences" visibility="private" type="servo_Preferences" aggregation="composite" association="assoc_918">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_919_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_919_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_921" type="egl_AppInitOptions" aggregation="none" association="assoc_918">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_921_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_921_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_922" name="servoshellPreferences" memberEnd="end_923 back_925">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_923" name="servoshellPreferences" visibility="private" type="prefs_ServoShellPreferences" aggregation="composite" association="assoc_922">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_923_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_923_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_925" type="egl_AppInitOptions" aggregation="none" association="assoc_922">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_925_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_925_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_926" name="state" memberEnd="end_927 back_929">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_927" name="state" visibility="private" type="state_RunningAppState" aggregation="shared" association="assoc_926">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_927_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_927_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_929" type="egl_App" aggregation="none" association="assoc_926">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_929_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_929_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="assoc_930" name="host" memberEnd="end_931 back_933">
+      <ownedEnd xmi:type="uml:Property" xmi:id="end_931" name="host" visibility="private" type="host_HostTrait" aggregation="shared" association="assoc_930">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="end_931_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="end_931_hi" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="back_933" type="egl_App" aggregation="none" association="assoc_930">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="back_933_lo" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="back_933_hi" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_934" name="opens a window through" client="state_RunningAppState" supplier="win_PlatformWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_935" name="reads" client="hist_History" supplier="hist_ActiveEntry"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_936" name="produces" client="hist_History" supplier="hist_HistoryUpdate"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_937" name="opens" client="hist_History" supplier="hist_HistoryService"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_938" name="may come from" client="search_SearchEngine" supplier="search_BuiltinEngine"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_939" name="parsed from" client="prefs_ArgumentParsingResult" supplier="prefs_CmdArgs"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_940" name="creates when headed" client="dapp_App" supplier="win_HeadedWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_941" name="creates when headless" client="dapp_App" supplier="win_HeadlessWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_942" name="registers servo:" client="dapp_App" supplier="proto_ServoProtocolHandler"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_943" name="registers resource:" client="dapp_App" supplier="proto_ResourceProtocolHandler"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_944" name="registers urlinfo:" client="dapp_App" supplier="proto_UrlInfoProtocolHander"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_945" name="installs home settings" client="dapp_App" supplier="home_Home"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_946" name="installs search engines" client="dapp_App" supplier="search_InstalledSearchEngines"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_947" name="creates" client="loop_ServoShellEventLoop" supplier="loop_HeadedEventLoopWaker"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_948" name="creates" client="loop_ServoShellEventLoop" supplier="loop_HeadlessEventLoopWaker"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_949" name="runs" client="loop_ServoShellEventLoop" supplier="dapp_App"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_950" name="produced while rendering" client="gui_Gui" supplier="gui_DevtoolsDock"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_951" name="emits" client="gui_Gui" supplier="state_UserInterfaceCommand"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_952" name="returns" client="menu_AppMenu" supplier="menu_AppMenuAction"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_953" name="draws the rows" client="menu_AppMenu" supplier="icon_ToolbarIconCache"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_954" name="creates for WebXR" client="win_HeadedWindow" supplier="headed_XRWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_955" name="publishes" client="game_ServoshellGamepadDelegate" supplier="loop_AppEvent"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_956" name="collects" client="proto_ProcessSampler" supplier="proto_RawProcess"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_957" name="indexes" client="proto_ProcessSampler" supplier="proto_SampleKey"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_958" name="joins the tabs" client="proto_ProcessSampler" supplier="proto_EmbedderTab"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_959" name="parsed from" client="proto_RawProcess" supplier="proto_StatFields"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_960" name="registers" client="xr_XrDiscoveryWebXrRegistry" supplier="xr_XrPrefObserver"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_961" name="GlWindow via" client="xr_XrDiscovery" supplier="win_PlatformWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_962" name="implemented by external types" client="keys_FromWinitKeyEvent" supplier="kb_Key"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_963" name="covers" client="trace_LogTarget" supplier="loop_AppEvent"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_964" name="builds" client="cli_Cli" supplier="dapp_App"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_965" name="starts" client="cli_Cli" supplier="loop_ServoShellEventLoop"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_966" name="parses" client="cli_Cli" supplier="prefs_ArgumentParsingResult"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_967" name="delegates to the desktop" client="aether_Aether" supplier="cli_Cli"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_968" name="creates" client="egl_App" supplier="egl_EmbeddedPlatformWindow"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_969" name="built from" client="egl_App" supplier="egl_AppInitOptions"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_970" name="to" client="and_KeyCode" supplier="kb_Key"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_971" name="calls" client="and_HostCallbacks" supplier="egl_App"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_972" name="delegates to Android and OpenHarmony" client="aether_Aether" supplier="egl_App"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_973" name="carries" client="ohos_ServoAction" supplier="ohos_TouchEventType"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_974" name="carries" client="ohos_ServoAction" supplier="ohos_XComponentWrapper"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_975" name="carries" client="ohos_ServoAction" supplier="ohos_WindowWrapper"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_976" name="send failure" client="ohos_ServoAction" supplier="ohos_CallError"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_977" name="sends" client="ohos_WakeupCallback" supplier="ohos_ServoAction"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_978" name="sends" client="ohos_ServoIme" supplier="ohos_ServoAction"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_979" name="attaches" client="ohos_HostCallbacks" supplier="ohos_ServoIme"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_980" name="converts to" client="ohos_HostCallbacks" supplier="ohos_OhosImeOptions"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_981" name="calls" client="ohos_HostCallbacks" supplier="egl_App"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_982" name="feeds" client="ohos_InitOpts" supplier="egl_AppInitOptions"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_983" name="search template" client="parser_Parser" supplier="search_SearchEngines"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_984" name="location bar" client="win_ServoShellWindow" supplier="parser_Parser"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_985" name="reads" client="proto_ResourceProtocolHandler" supplier="res_Resources"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_986" name="installs" client="cli_Cli" supplier="crash_CrashHandler"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="dep_987" name="installs" client="cli_Cli" supplier="panic_PanicHook"/>
+  </uml:Model>
+</xmi:XMI>
