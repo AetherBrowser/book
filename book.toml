@@ -9,8 +9,8 @@ git-repository-url = "https://github.com/AetherBrowser/book"
 edit-url-template = "https://github.com/AetherBrowser/book/edit/main/{path}"
 site-url = "/"
 # Putting additional-css and additional-js in src/ gives them live reload.
-additional-css = ["src/custom.css"]
-additional-js = ["src/mermaid.min.js", "src/mermaid-init.js"]
+additional-css = ["src/custom.css", "src/class-diagram.css"]
+additional-js = ["src/mermaid.min.js", "src/mermaid-init.js", "src/class-diagram.js"]
 
 [preprocessor]
 

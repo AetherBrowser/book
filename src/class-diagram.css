@@ -1,0 +1,141 @@
+/* Interactive UML class diagram on the architecture page. */
+.class-diagram {
+    --cd-paper: var(--bg);
+    --cd-ink: var(--fg);
+    --cd-muted: var(--fg);
+    --cd-line: var(--table-border-color);
+    --cd-folder: color-mix(in srgb, var(--fg) 7%, var(--bg));
+    --cd-folder-stroke: color-mix(in srgb, var(--fg) 38%, var(--bg));
+    --cd-class: var(--bg);
+    --cd-interface: color-mix(in srgb, #3b82f6 16%, var(--bg));
+    --cd-enum: color-mix(in srgb, #d97706 18%, var(--bg));
+    --cd-datatype: color-mix(in srgb, #7c3aed 16%, var(--bg));
+    --cd-edge: var(--fg);
+    --cd-label-bg: var(--bg);
+    --cd-hot: #c2410c;
+    --cd-hot-text: #9a3412;
+    margin: 1rem 0 1.4rem;
+    font-family: var(--font, "Open Sans", sans-serif);
+    color: var(--fg);
+}
+
+html.coal .class-diagram,
+html.navy .class-diagram,
+html.ayu .class-diagram {
+    --cd-hot: #fb923c;
+    --cd-hot-text: #fdba74;
+}
+
+.class-diagram-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem 1rem;
+    align-items: end;
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--cd-line);
+    border-bottom: 0;
+    background: var(--cd-folder);
+}
+
+.class-diagram-toolbar label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.class-diagram-toolbar label.check {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0.35rem;
+}
+
+.class-diagram-toolbar select,
+.class-diagram-toolbar button {
+    font: inherit;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--cd-line);
+}
+
+.class-diagram-toolbar select {
+    min-width: 16rem;
+    max-width: 100%;
+    padding: 0.3rem 0.4rem;
+}
+
+.class-diagram-toolbar button {
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+}
+
+.class-diagram-toolbar button:disabled {
+    opacity: 0.55;
+    cursor: progress;
+}
+
+.class-diagram-status,
+.class-diagram-legend {
+    margin: 0;
+    padding: 0.45rem 0.9rem;
+    border-left: 1px solid var(--cd-line);
+    border-right: 1px solid var(--cd-line);
+    background: var(--cd-folder);
+    color: var(--fg);
+    font-size: 0.9rem;
+}
+
+.class-diagram-legend {
+    padding-bottom: 0.7rem;
+}
+
+.class-diagram-stage {
+    overflow: auto;
+    max-height: 75vh;
+    border: 1px solid var(--cd-line);
+    background: var(--cd-paper);
+}
+
+.class-diagram-canvas {
+    min-height: 12rem;
+}
+
+.class-diagram svg {
+    display: block;
+}
+
+.class-diagram svg .node,
+.class-diagram svg .edge {
+    cursor: pointer;
+}
+
+.class-diagram svg.dim .node,
+.class-diagram svg.dim .edge {
+    opacity: 0.16;
+}
+
+.class-diagram svg.dim .hot {
+    opacity: 1;
+}
+
+.class-diagram svg .node.hot > rect {
+    stroke: var(--cd-hot);
+    stroke-width: 2.6px;
+}
+
+.class-diagram svg .edge.hot .wire,
+.class-diagram svg .edge.hot .mark {
+    stroke: var(--cd-hot);
+    stroke-width: 2.4px;
+}
+
+.class-diagram svg .edge.hot .mark.filled {
+    fill: var(--cd-hot);
+}
+
+.class-diagram svg .edge.hot text {
+    fill: var(--cd-hot-text);
+    font-weight: 600;
+}
