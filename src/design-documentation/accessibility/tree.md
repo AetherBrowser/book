@@ -24,7 +24,7 @@ This causes the `LayoutThread` to:
 
 Even if no reflow is otherwise required, setting the `needs_accessibility_update` flag will ensure a rendering update occurs, as it is checked in Document's [`needs_rendering_update()`](https://doc.servo.org/script/dom/document/document/struct.Document.html#method.needs_rendering_update) method, and LayoutThread's [`can_skip_reflow_request_entirely()`](https://doc.servo.org/layout/layout_impl/struct.LayoutThread.html#method.can_skip_reflow_request_entirely) method.
 
-For example, if you loaded a static web page in `servoshell`, waited until the load and rendering the page were complete, and then started an assistive technology to activate accessibility, this would ensure that layout would run even though there would otherwise be no reason to run layout.
+For example, if you loaded a static web page in Aether, waited until the load and rendering the page were complete, and then started an assistive technology to activate accessibility, this would ensure that layout would run even though there would otherwise be no reason to run layout.
 That ensures the accessibility tree will be populated regardless of whether a layout is required otherwise.
 
 When the next reflow occurs, if the LayoutThread's `accessibility_tree` exists, the accessibility tree update occurs as a phase after all the other phases in [`handle_reflow()`](https://doc.servo.org/layout/layout_impl/struct.LayoutThread.html#method.handle_reflow).

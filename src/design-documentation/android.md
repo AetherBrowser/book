@@ -1,8 +1,8 @@
 # Android app architecture
 
 The implementation of the Android app is divided into a number of components:
-* the shared Android/OpenHarmony implementation of `servoshell` (`ports/servoshell/egl`)
-* the Android-specific `servoshell` integration (`ports/servoshell/egl/android.rs`)
+* the shared Android/OpenHarmony implementation of the Aether port (`ports/aether/egl`)
+* the Android-specific integration (`ports/aether/egl/android/mod.rs`)
 * the main Android activity (`support/android/apk/servoapp/src/main/java/org/servoshell`)
 * the ServoView component (`support/android/apk/servoview/src/main/java/org/servo/servoview`)
   * the Android SurfaceView (`ServoView.kt`)
@@ -29,5 +29,5 @@ The Servo component exposes a `Client` interface for the UI thread actions, enab
 
 # JNI integration
 
-Every `native` member of the `JNIServo` class is implemented in the `android.rs` file as a `#[unsafe(no_mangle)]` function with a matching name.
+Every `native` member of the `JNIServo` class is implemented in `ports/aether/egl/android/mod.rs` as a `#[unsafe(no_mangle)]` function with a matching name.
 The `jni-rs` crate [documentation](https://docs.rs/jni/latest/jni/) has more information on this integration.

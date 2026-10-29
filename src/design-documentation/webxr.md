@@ -26,7 +26,7 @@ Finally, there are graphics-specific concepts that are important for the low-lev
 
 ## How Servo's compositor starts
 
-The embedder is responsible for creating a window and [triggering the rendering context creation](https://github.com/servo/servo/blob/8683f97fcc75b3ce12d9068e8b16b1da7e6abe78/ports/servoshell/desktop/headed_window.rs#L147) appropriately.
+The embedder is responsible for creating a window and [triggering the rendering context creation](https://github.com/AetherBrowser/aether/blob/master/ports/aether/desktop/headed_window.rs) appropriately.
 Servo creates the rendering context by [creating a surfman context](https://github.com/servo/servo/blob/8683f97fcc75b3ce12d9068e8b16b1da7e6abe78/components/shared/compositing/rendering_context.rs#L108-L120) which will be [used by the compositor](https://github.com/servo/servo/blob/8683f97fcc75b3ce12d9068e8b16b1da7e6abe78/components/servo/lib.rs#L479) for all [web content rendering operations](https://github.com/servo/servo/blob/8683f97fcc75b3ce12d9068e8b16b1da7e6abe78/components/servo/lib.rs#L278-L285).
 
 ## How a session starts

@@ -2,9 +2,7 @@
 
 Servo is a web browser engine, which we intend to be easy to embed in other applications.
 Currently, the documentation on how to embed Servo is sparse, and this Chapter is an active work in progress.
-Please feel free to reach out to us on the [Servo Zulip] chat if you have any questions.
-
-[Servo Zulip]: https://servo.zulipchat.com
+Please feel free to open a discussion on [AetherBrowser/aether](https://github.com/AetherBrowser/aether/discussions) if you have any questions.
 
 ## Building servo without mach
 
@@ -34,5 +32,5 @@ In such a case the ResourceReader implementation is responsible for providing al
 
 [servo_embedder_traits::submit_resource_reader]: https://docs.rs/servo-embedder-traits/latest/embedder_traits/macro.submit_resource_reader.html
 
-An example usage is the OpenHarmony port, which reads all resources from the filesystem: [ohos/resources.rs](https://github.com/servo/servo/blob/78c9fe2a4c7a645e7ec729094bfe3eb8a6c15189/ports/servoshell/egl/ohos/resources.rs).
+An example usage is the OpenHarmony port of Aether, which reads all resources from the filesystem: [ohos/resources.rs](https://github.com/AetherBrowser/aether/blob/master/ports/aether/egl/ohos/resources.rs).
 

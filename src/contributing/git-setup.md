@@ -3,22 +3,22 @@
 If you are new to Git or distrbuted version control, it's highly recommended that you spend some time learning the basics before continuing here.
 There are many incredible resources online for learning Git.
 For instance, the Zulip project maintains a [very thorough guide](https://zulip.readthedocs.io/en/latest/git/index.html) to using Git for contributing to an open source project.
-The information there is often very relevant to working on Servo as well.
+The information there is often very relevant to working on Aether as well.
 Becoming proficient with Git is a skill that will come in handy in many kinds of software development tasks and it's worth the time.
 
-When you cloned Servo originally, the upstream Servo repository at `https://github.com/servo/servo` was your upstream.
-You can choose to keep that configuration, but the recommneded workflow is the following:
+When you cloned Aether originally, the upstream repository at `https://github.com/AetherBrowser/aether` was your upstream.
+You can choose to keep that configuration, but the recommended workflow is the following:
 
-1. [Fork](https://github.com/servo/servo/fork) the upstream Servo repository.
-2. Check out a clone of your newly-forked copy of Servo.
+1. [Fork](https://github.com/AetherBrowser/aether/fork) the upstream Aether repository.
+2. Check out a clone of your newly-forked copy.
    ```sh
-   git clone --depth 10 https://github.com/<username>/servo.git
+   git clone --depth 10 https://github.com/<username>/aether.git
    ```
-   Note that the `--depth 10` arguments here throw away most of Servo's commit history for better performance.
+   Note that the `--depth 10` arguments here throw away most of the commit history for better performance.
    They can be omitted.
-3. Add a new remote named `upstream` that points at `servo/servo`.
+3. Add a new remote named `upstream` that points at `AetherBrowser/aether`.
    ```sh
-   git remote add upstream https://github.com/servo/servo.git
+   git remote add upstream https://github.com/AetherBrowser/aether.git
    ```
 
 ## Starting a new change
@@ -38,7 +38,7 @@ Instead you should do your work on a branch.
 3. Make your changes and commit them on that branch.
    Don't forget to [sign off on each commit](https://developercertificate.org/), too!
    ```sh
-   git commit --signoff -m "script: Add a stub interface for MessagePort"
+   git commit --signoff -m "AET-xx: Add a stub interface for MessagePort"
    ```
 
 Next, you probably want to [make a pull request](making-a-pull-request.md) with your changes.

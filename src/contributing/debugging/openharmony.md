@@ -1,9 +1,11 @@
 # Debugging on OpenHarmony
 
+> /!\ Not officially support by the Aether team (it will comming soon)
+
 It's recommended to read the general advice from the [Debugging section](index.md) first.
 This section will only cover the differences that need to be considered on OpenHarmony.
 
-## Starting servoshell from the commandline
+## Starting Aether from the command line
 
 When debugging, it can often be useful to start servo from the commandline instead of clicking the app icon, since we can pass parameters from the commandline.
 
@@ -12,7 +14,7 @@ When debugging, it can often be useful to start servo from the commandline inste
 hdc shell aa start --help
 # Start servo from the commandline
 hdc shell aa start -a EntryAbility -b org.servo.servo
-# --ps=<arg> <value> can be used to pass arguments with values to servoshell.
+# --ps=<arg> <value> can be used to pass arguments with values to aether.
 # The space between arg and value is mandatory when using `--ps`, meaning `--ps=--log-filter warn` is
 # correct while `--ps=--log-filter=warn` is not.
 # For pure flags without a value use `--psn <flag>`
@@ -47,10 +49,10 @@ Whether log statements are visible depends on multiple conditions:
 1. The compile-time max log level of the `log` crate. See [log compile-time filters].
   Note: The `release_max_level_<level>` features of the log crate check if `debug_assertions = false` is set
   to determine the release filters should apply or not.
-2. The runtime `log` global filter per module filters set in servoshell. Since environment variables aren't an
-  option to customize the log level, `servoshell` has the `--log-filter` option on ohos targets, which allows
+2. The runtime `log` global filter per module filters set in aether. Since environment variables aren't an
+  option to customize the log level, `aether` has the `--log-filter` option on ohos targets, which allows
   customizing the log filter of the `log` crate.
-  By default, servoshell sets a log filter which hides log statements from many crates, so you likely will need to
+  By default, aether sets a log filter which hides log statements from many crates, so you likely will need to
   set a custom log-filter if you aren't seeing the logs from the crate you are debugging.
 3. The `hilog` base log filter. `hdc shell hilog --base-level=<log_level>`. Can be combined with `--domain` and `--tag`
   options to customize **which logs are saved**.
@@ -66,7 +68,7 @@ Most of the time option 2 and/or 4 should be used, since they allow quick change
 For Rust code in servo logged via the `log` crate we set [`0xE0C3`] as the domain and for Spidermonkey C++ code we set [`0xE0C4`].
 These values are somewhat arbitrarily chosen.
 
-[`0xE0C3`]: https://github.com/servo/servo/blob/384d8f1ff895f070397b7a5a384428b1678416c5/ports/servoshell/egl/ohos.rs#L420
+[`0xE0C3`]: https://github.com/AetherBrowser/aether/blob/master/ports/aether/egl/ohos/mod.rs#L816
 [`0xE0C4`]: <TODO - link pending SM PR being merged.>
 
 ### Hilog privacy feature

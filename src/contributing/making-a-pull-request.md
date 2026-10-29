@@ -1,22 +1,22 @@
 # Making a Pull Request
 
-Contributions to Servo or its dependencies should be made in the form of GitHub pull requests.
+Contributions to Aether should be made in the form of GitHub pull requests on [AetherBrowser/aether](https://github.com/AetherBrowser/aether).
 Each pull request will be reviewed by a core contributor (someone with permission to land patches) and either landed in the main tree or given feedback for changes that would be required.
 All contributions should follow this format, even those from core contributors.
 
 ## Pull request checklist
 
-- Branch from the main branch and, if necessary, rebase your branch to main before submitting your pull request.
-  If it doesn't merge cleanly with main you may be asked to rebase your changes.
+- Branch from the `main` branch and, if necessary, rebase your branch to `main` before submitting your pull request.
+  If it doesn't merge cleanly with `main` you may be asked to rebase your changes.
 
 - Run `./mach fmt` and `./mach test-tidy` on your change.
 
 - Commits should be as small as possible, while ensuring that each commit is correct independently (i.e., each commit should compile and pass tests).
 
-- Commits should be accompanied by a [Developer Certificate of Origin](http://developercertificate.org) sign-off, which indicates that you (and your employer if applicable) agree to be bound by the terms of the [project license](https://github.com/servo/servo/blob/main/LICENSE).
+- Commits should be accompanied by a [Developer Certificate of Origin](http://developercertificate.org) sign-off, which indicates that you (and your employer if applicable) agree to be bound by the terms of the [project license](https://github.com/AetherBrowser/aether/blob/master/LICENSE).
   In git, this is the `-s` option to `git commit`.
 
-- If your patch is not getting reviewed, or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment, or you can ask for a review in [the Servo chat](https://servo.zulipchat.com/).
+- If your patch is not getting reviewed, or you need a specific person to review it, @-reply a reviewer in the pull request.
 
 - Add tests relevant to the fixed bug or new feature.
   For a DOM change this will usually be a web platform test; for layout, a reftest.
@@ -26,7 +26,7 @@ All contributions should follow this format, even those from core contributors.
 
 First, push your branch to your `origin` remote.
 Next, either open the URL that is returned by a successful push to start the pull request,
-or visit your Servo fork in your web browser and follow the UI prompts.
+or visit your Aether fork in your web browser and follow the UI prompts.
 
 ```
 jdm@pathfinder servo % git push origin issue-12345
@@ -47,7 +47,7 @@ remote:
 
 # Title and description
 
-In Servo, commits in pull requests are squashed and the pull request title and description are used to create the final commit message ([example](https://github.com/servo/servo/commit/9f4f598f44518d6883257f04f2ed11a8edd732c0)).
+Commits in pull requests are merged, and the pull request title is used to create the final commit message.
 It's important that the information in both the title and description fully describes the change, as it makes the commit useful for those looking at the repository history and makes Servo a healthier project as a whole.
 
 The pull request title should succinctly describe what a change does. Some tips:
@@ -99,7 +99,7 @@ Please do not press the "Update branch" button on the pull request; this perform
 
 ![Screenshot of a GitHub UI button that says "Update branch"](../images/github-update-branch.png)
 
-Instead, first update your local main branch, then rebase your feature branch on top of the main branch, then force push the changes.
+Instead, first update your local `main` branch, then rebase your feature branch on top of `main`, then force push the changes.
 
 ```
 git checkout issue-12345

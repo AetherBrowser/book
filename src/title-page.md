@@ -1,31 +1,32 @@
-# The Servo Book
-
-**[API docs](https://doc.servo.org/servo/)**
+# The Aether Book
 
 ***
 
-[_Servo_](https://servo.org) is a web browser engine written in the Rust programming language, and currently developed for following platforms:
+[Aether](https://github.com/AetherBrowser/aether) is the browser built by [AetherBrowser](https://github.com/AetherBrowser).
+It embeds [Servo](https://servo.org), a web browser engine written in Rust, and adds the desktop shell, profile storage, and the engine hooks those features need.
+
+Aether currently runs on:
+
 - 64-bit Linux
 - 64-bit macOS
 - 64-bit Windows
 - Android
 - OpenHarmony
 
-Work is still ongoing to make Servo consumable as a webview library.
-Currently, the recommended way to run Servo as a browser is via [_servoshell_](https://servo.org/download/), our [winit](https://crates.io/crates/winit) and [egui](https://crates.io/crates/egui)-based demo browser.
-If you’d like to embed Servo in your own application, consider using [tauri-runtime-verso](https://github.com/versotile-org/tauri-runtime-verso), a custom [Tauri](https://tauri.app/) runtime, or [servo-gtk](https://github.com/nacho/servo-gtk), a GTK4-based web browser widget.
+On the desktop, Aether is the [winit](https://crates.io/crates/winit) and [egui](https://crates.io/crates/egui) browser in `ports/aether`.
+`./mach build` builds that port by default.
+The upstream demo shell, `ports/servoshell`, is still in the tree; pass `--port=servoshell` to build it instead.
 
-![Screenshot of servoshell](images/servoshell.png)
-
-This book will be your guide to building and running servoshell, hacking on and contributing to Servo, the architecture of Servo, and how to consume Servo and its libraries.
+This book covers building and running Aether, contributing to it, and the architecture of the Servo engine underneath.
+The engine chapters describe Servo.
+[Architecture](design-documentation/architecture.md) describes `ports/aether` and the Servo components Aether changes.
 
 **This book is a work in progress!**
 In the table of contents, \* denotes chapters that were recently added or imported from older docs, and still need to be copyedited or reworked.
 
 Contributions are always welcome.
-Click the pencil button in the top right of each page to propose changes, or go to [servo/book](https://github.com/servo/book) for more details.
+Click the pencil button in the top right of each page to propose changes, or go to [AetherBrowser/book](https://github.com/AetherBrowser/book).
 
 ## Need help?
 
-Join the [Servo Zulip](https://servo.zulipchat.com) if you have any questions.
-Everyone is welcome!
+Open a discussion on [AetherBrowser/aether](https://github.com/AetherBrowser/aether/discussions).

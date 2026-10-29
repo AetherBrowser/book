@@ -1,5 +1,160 @@
 # Architecture
 
+Aether is the browser. Servo is the engine it embeds.
+This page first describes `ports/aether` and the Servo components Aether changes, then the engine architecture Aether inherits.
+
+## The Aether port
+
+`ports/aether` is the embedder. On the desktop it owns the winit event loop, the egui chrome, and the profile.
+Android and OpenHarmony use the same crate through `ports/aether/egl`, but their packages still load `aether.so`.
+
+```mermaid
+flowchart TB
+    subgraph Browser["ports/aether"]
+        CLI["desktop/cli.rs<br/>winit event loop"]
+        GUI["egui chrome<br/>gui, menu, dialogs, headed window"]
+        State["RunningAppState<br/>WebViewDelegate"]
+        Hist["history.rs<br/>visit or replace"]
+        Search["search.rs<br/>search.json"]
+        Proto["Protocol handlers<br/>servo:, resource:, urlinfo:"]
+        Sampler["ProcessSampler<br/>desktop/protocols/processes.rs"]
+        CLI --> GUI
+        GUI --> State
+        State --> Hist
+        GUI --> Search
+        Proto --> Sampler
+    end
+
+    subgraph Embed["components/servo"]
+        API["ServoBuilder, WebView,<br/>WebViewDelegate"]
+    end
+
+    subgraph Engine["Servo engine"]
+        Const["constellation<br/>NavigationType, page title"]
+        Script["script thread<br/>DOM, SpiderMonkey, tab stats"]
+        Rest["layout, net, renderer<br/>unchanged by Aether"]
+        Places["aether_history<br/>places.sqlite"]
+        Stats["profile::tab_stats<br/>temp JSON snapshots"]
+    end
+
+    State --> API
+    API --> Const
+    Const --> Script
+    Script --> Rest
+    Script --> Stats
+    Hist --> Places
+    Sampler --> Stats
+    Const --> API
+```
+
+Solid arrows are calls or messages. The chrome never talks to script threads directly. It goes through `WebView` and the constellation, which is the same boundary Servo gives every embedder.
+
+`desktop/app.rs` builds that boundary at startup:
+
+1. Load search engines from `{config_dir}/search.json`.
+2. Register the `urlinfo`, `servo`, and `resource` protocol handlers.
+3. Build a `Servo` with `ServoBuilder` and open a `HistoryService` on `places.sqlite`.
+4. Open a window whose `RunningAppState` is the `WebViewDelegate`.
+
+The application menu (`desktop/menu.rs`) is New Tab, New Window, History, Settings, More Tools, and Exit. More Tools opens the developer-tools dock and `servo:processes`.
+
+| Page | What serves it |
+| --- | --- |
+| `servo:newtab`, `servo:history`, `servo:settings`, `servo:processes`, `servo:preferences`, `servo:config`, `servo:license` | `ServoProtocolHandler` reads HTML from `resources/resource_protocol` through `resource:` |
+| `servo:search-engines` | JSON read and write of `search.json`. The location bar substitutes `%s` in the engine URL |
+| `servo:process-list` | JSON snapshot from `ProcessSampler`. Requests whose origin or referrer is a web scheme are rejected |
+| `urlinfo:` | Echoes the requested URL |
+
+Built-in search engines are DuckDuckGo, Google, Bing, and Startpage. DuckDuckGo is the default. The settings page edits this list at `servo:settings#search`.
+
+The developer-tools entry opens an egui dock on the right of the window (`gui.rs`). It is chrome around the page, separate from Servo's remote DevTools server.
+
+## Class diagram
+
+[`class_diagram.xmi`](class_diagram.xmi) is a UML model of the Aether shell (`ports/aether`) and of the Servo components this repository changes: `aether_history`, the constellation, embedder traits, script, and profile. Packages follow the Rust modules. Traits are interfaces. Enums are enumerations. A module that only holds free functions is a utility class. Composition means ownership. Shared aggregation means an `Rc` or a shared reference. Types Aether only extends, such as `WebView` and `WebViewDelegate`, stay in the `external` package.
+
+<div class="class-diagram" data-xmi="class_diagram.xmi">
+<form class="class-diagram-toolbar" id="class-diagram-controls">
+<label>Package <select id="class-diagram-package" name="package"></select></label>
+<label class="check"><input type="checkbox" id="class-diagram-neighbors"> Linked neighbors</label>
+<label class="check"><input type="checkbox" id="class-diagram-members"> Attributes and operations</label>
+<label class="check"><input type="checkbox" id="class-diagram-deps" checked> Dependencies</label>
+<label class="check"><input type="checkbox" id="class-diagram-external"> External types</label>
+<label class="check"><input type="checkbox" id="class-diagram-rust-types"> Generated Rust types</label>
+<button type="submit" id="class-diagram-draw">Draw</button>
+<button type="button" id="class-diagram-zoom-out" title="Zoom out">−</button>
+<button type="button" id="class-diagram-zoom-in" title="Zoom in">+</button>
+</form>
+<p class="class-diagram-status">Reading the model…</p>
+<div class="class-diagram-stage" tabindex="0">
+<div class="class-diagram-canvas"></div>
+</div>
+</div>
+
+## History
+
+Aether stores a profile history, distinct from the session history Servo already keeps for back and forward. Only top-level `http` and `https` documents are recorded. `servo:`, `about:`, `data:`, `blob:`, and `file:` URLs are not. Usernames and passwords are stripped before the row is written.
+
+```mermaid
+sequenceDiagram
+    participant Doc as Document
+    participant Script as Script thread
+    participant Constellation
+    participant WebView
+    participant App as RunningAppState
+    participant Decide as history.rs
+    participant DB as HistoryService
+
+    Doc->>Script: title change
+    Script->>Constellation: TitleChanged
+    Constellation->>WebView: PageTitleChanged
+    WebView->>App: notify_page_title_changed
+    App->>DB: set_title, if the URL is recorded
+
+    Note over Constellation: Top-level commit only. Iframe navigations omit NavigationType.
+    Constellation->>WebView: HistoryChanged with NavigationType and title
+    WebView->>App: notify_navigation_committed
+    App->>Decide: Push, Replace, or Traverse
+    Decide->>DB: record_visit or replace_visit
+```
+
+`NavigationType` lives in `components/shared/embedder` and is set on the session-history change inside the constellation:
+
+- **Push** adds an entry, for example a link click or `history.pushState()`.
+- **Replace** overwrites the active entry. That covers meta refresh, `location.replace()`, a script navigation before the load finishes, `history.replaceState()`, and reload.
+- **Traverse** activates an existing entry, for example back or forward. Aether does not count it as a new visit.
+
+`history.rs` then decides what to persist:
+
+- The same URL as the active entry changes nothing.
+- **Replace** moves the existing visit onto the new URL, which is how a client-side redirect keeps a single visit.
+- **Push**, and a **Replace** that has no visit to move, inserts a visit dated at commit time.
+- **Traverse** updates the active entry and writes nothing.
+
+`components/aether_history` applies those commands on a thread named `History`, in batches, against a SQLite database shaped like Firefox `places.sqlite`: one `places` row per URL, one `visits` row per visit, plus the last title. Dropping the service drains the queue. If the database cannot be opened, browsing continues with history disabled for that session. Temporary profiles and runs without a config directory keep the database in memory.
+
+Titles no longer travel as `EmbedderMsg::ChangePageTitle` straight from the document. The document sends `TitleChanged` to the constellation, and the constellation forwards `PageTitleChanged` only when the pipeline is the active top-level document. `WebView::set_history` also carries the title known at commit time, and reports `notify_page_title_changed` when it differs.
+
+`components/script/dom/window/location.rs` now checks transient activation before forcing `historyHandling` to replace. A navigation started with transient activation, on a document that has not finished loading, can push instead of replace.
+
+## Process list
+
+`servo:processes` needs data the embedder cannot see from `WebView` alone: per-process CPU and memory, and the SpiderMonkey heap of each script thread.
+
+```mermaid
+flowchart LR
+    Script["Script thread"] -->|"JSON at most every 400 ms"| Dir["temp dir aether-tab-stats"]
+    Chrome["Open tabs in the embedder"] --> Sampler["ProcessSampler"]
+    Dir --> Sampler
+    OS["OS process tree<br/>Linux, Windows, macOS"] --> Sampler
+    Sampler --> Endpoint["servo:process-list"]
+    Endpoint --> Page["servo:processes"]
+```
+
+`components/shared/profile/tab_stats.rs` is the cross-process side of that pipe. Each script thread publishes a `ScriptTabStats` snapshot (pid, tid, webview id, top-level URL, `JSGC_BYTES`) and removes it when the thread stops. Files older than 10 seconds are stale. The sampler reads them, walks the browser's descendant processes, and returns one JSON document to the page. Web content cannot fetch `servo:process-list`.
+
+## The Servo engine
+
 Servo is a project to develop a new web browser engine.
 Our goal is to create an architecture that takes advantage of parallelism at many levels while eliminating common sources of bugs and security vulnerabilities associated with incorrect memory management and data races.
 

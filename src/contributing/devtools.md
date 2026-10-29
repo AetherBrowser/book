@@ -1,11 +1,14 @@
 # DevTools
 
+
+> /i\ Devtool will be natvely included in the aether app
+
 [Firefox DevTools](https://firefox-source-docs.mozilla.org/devtools-user) are a set of web developer tools that can be used to examine, edit, and debug a website's HTML, CSS, and JavaScript.
 Servo has support for a subset of DevTools functionality, allowing for simple debugging.
 
 ## Connecting to Servo
 
-1. Run servoshell with the DevTools server enabled.
+1. Run Aether with the DevTools server enabled.
    The number after the `devtools` parameter is the port used by the server.
 
 ```sh

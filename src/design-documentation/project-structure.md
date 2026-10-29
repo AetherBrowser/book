@@ -3,6 +3,7 @@
 # Project Structure
 
 - **components**
+  - **aether_history** — Profile browsing history for Aether. A dedicated thread writes `places.sqlite` (URLs, visits, and the last title).
   - **allocator** — Selects the default global allocator for Servo, and exposing common allocator introspection APIs for memory profiling.
   - **background_hang_monitor** — Code for detecting hangs in child constellation/script threads.
   - **bluetooth** — Implementation of the bluetooth thread.
@@ -23,7 +24,7 @@
   - **net** — Network protocol implementations, and state and resource management (caching, cookies, etc.).
   - **paint** — Integration with OS windowing/rendering and event loop.
   - **pixels** — Helper functions relating to image/pixel manipulation and decoding
-  - **profile** — Memory and time profilers.
+  - **profile** — Memory and time profilers. Also publishes script-thread snapshots for `servo:processes` (`tab_stats`).
   - **script** — Implementation of the DOM (native Rust code and bindings to SpiderMonkey).
   - **script_bindings** - Support code and bindings generated from WebIDL files.
     The bindings consist of traits representing WebIDL interfaces and glue code for the
@@ -46,7 +47,8 @@
   - **xpath** — Implementation of XPath specification.
 - **etc** — Useful tools and scripts for developers.
 - **ports**
-  - **servoshell** — The example browser that uses servo.
+  - **aether** — The Aether browser. Desktop chrome, history, search, and internal `servo:` pages. This is the default `./mach build` port.
+  - **servoshell** — The upstream Servo demo browser. Build it with `--port=servoshell`.
 - **python**
   - **mach** — A command-line tool to help with developer tasks.
   - **servo** — Implementations of servo-specific mach commands.
@@ -69,7 +71,15 @@
 
 # Repositories
 
-The Servo project maintains a number of repositories that are either released independently of Servo or are forked from an upstream project.
+AetherBrowser develops the browser in [aether](https://github.com/AetherBrowser/aether) and this book in [book](https://github.com/AetherBrowser/book).
+
+The Servo project maintains a number of repositories that are either released independently of Servo or are forked from an upstream project. Aether still builds on that ecosystem.
+
+## Aether-internal
+
+- [aether](https://github.com/AetherBrowser/aether): The main project
+- [book](https://github.com/AetherBrowser/book): This book!
+- [doc.aetherbrowser.org](https://github.com/AetherBrowser/doc.aetherbrowser.org): The docs for aether crates and included crates
 
 ## Widely-used in Rust ecosystem
 
@@ -88,7 +98,6 @@ The Servo project maintains a number of repositories that are either released in
 
 ## Servo-internal
 
-- [book](https://github.com/servo/book): This book!
 - [ci-runners](https://github.com/servo/ci-runners): Scripts and tools used for Servo's CI (continuous integration)
 - [malloc_size_of](https://github.com/servo/malloc_size_of): Measure the runtime size of values
 - [servo](https://github.com/servo/servo): The main repository for the Servo web platform engine

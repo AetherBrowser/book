@@ -1,4 +1,4 @@
-# TODOs
+# TODOs (Servo team only)
 
 - Link to PRs introducing various concepts?
     - Maybe just a standalone paragraph with the GitHub PR number as a link
@@ -32,7 +32,7 @@
     - don’t set label on graft nodes, because nothing can see it really (other than consumer API itself)
     - rename method for clarity and make it pub(crate) not pub
 - [#43558](https://github.com/servo/servo/pull/43558)
-    - in servoshell, activate accessibility in all webviews *and* plumb the webview a11y trees into the app’s main tree, because if we do the former without the latter, accesskit will panic!
+    - in Aether, activate accessibility in all webviews *and* plumb the webview a11y trees into the app’s main tree, because if we do the former without the latter, accesskit will panic!
 - [#43556](https://github.com/servo/servo/pull/43556)
     - graft active top-level pipeline trees into webview trees whenever the webview navigates (including both normal and bfcache navigations)
     - we steer clear of doing anything about iframes, but we expect that the grafts for those will be done by the containing document’s layout (see “Graft node ordering problems in Servo Accessibility” § iframe support)

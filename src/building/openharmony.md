@@ -1,5 +1,7 @@
 # Building for OpenHarmony
 
+> /!\ Not officially support by the Aether team (it will comming soon)
+
 <div class="warning _note">
 Support for OpenHarmony is currently in-progress and these instructions might change from time to time and might also be incomplete.
 </div>
@@ -123,7 +125,7 @@ Take care to install the hvigor version matching the requirements of your projec
 `mach` finds hvigor either on `PATH` (as `hvigorw`) or via the `HVIGOR_PATH` environment
 variable (the directory containing `node_modules`).
 
-## Building servoshell
+## Building Aether
 
 Once the SDK is available (see above), set the `OHOS_SDK_NATIVE` environment variable (unless
 DevEco Studio is auto-discovered) and build:
@@ -223,7 +225,8 @@ The process here is exactly the same as one android:
 
 ## Installing and running on-device
 
-The following command can be used to install previously built servoshell application on a 64-bit ARM device or emulator:
+The following command can be used to install a previously built Aether application on a 64-bit ARM device or emulator.
+The packaged HAP is still named `aether-default-signed.hap`:
 
 ```commandline
 ./mach install --ohos --release [--flavor=harmonyos]
